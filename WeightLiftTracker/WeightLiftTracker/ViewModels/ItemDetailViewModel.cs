@@ -36,7 +36,7 @@ namespace WeightLiftTracker.ViewModels
         {
             try
             {
-                var item = await DataStore.GetItemAsync(itemId);
+                var item = await App.Database.GetRoutineById(int.Parse(itemId));
                 Id = item.Id;
                 Name = item.Name;
             }

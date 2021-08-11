@@ -10,8 +10,6 @@ namespace WeightLiftTracker.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Routine> DataStore => DependencyService.Get<IDataStore<Routine>>();
-
         bool isBusy = false;
         public bool IsBusy
         {

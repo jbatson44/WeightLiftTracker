@@ -35,7 +35,7 @@ namespace WeightLiftTracker.ViewModels
             try
             {
                 Routines.Clear();
-                var routines = await DataStore.GetItemsAsync(true);
+                var routines = await App.Database.GetAllRoutines();
                 foreach (var routine in routines)
                 {
                     Routines.Add(routine);

@@ -47,7 +47,7 @@ namespace WeightLiftTracker.ViewModels
                 Name = name
             };
 
-            await DataStore.AddItemAsync(routine);
+            await App.Database.SaveRoutineAsync(routine);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");
