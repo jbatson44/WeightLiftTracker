@@ -78,7 +78,7 @@ namespace WeightLiftTracker.ViewModels
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={routine.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?routineId={routine.Id}");
         }
     }
 }

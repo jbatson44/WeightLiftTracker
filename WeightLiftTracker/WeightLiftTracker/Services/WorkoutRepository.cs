@@ -17,6 +17,7 @@ namespace WeightLiftTracker.Services
             database.CreateTableAsync<Routine>().Wait();
             database.CreateTableAsync<Exercise>().Wait();
             database.CreateTableAsync<Set>().Wait();
+            database.CreateTableAsync<RoutineExerciseGroups>().Wait();
         }
 
         public Task<List<Routine>> GetAllRoutines()
@@ -32,6 +33,17 @@ namespace WeightLiftTracker.Services
         public Task<Routine> GetRoutineById(int id)
         {
             return database.GetAsync<Routine>(id);
+        }
+
+        public Task<List<Exercise>> GetExercisesByRoutine(int routineId)
+        {
+            return database.QueryAsync<Exercise>(@"
+SELECT * 
+FROM Exercise e
+JOIN RoutineExerciseGroups reg
+ON e.Id = reg.ExerciseId
+WHERE reg.RoutineId = ?
+", routineId);
         }
     }
 }
