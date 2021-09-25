@@ -7,11 +7,11 @@ using Xamarin.Forms;
 
 namespace WeightLiftTracker.ViewModels
 {
-    public class NewItemViewModel : BaseViewModel
+    public class NewRoutineViewModel : BaseViewModel
     {
         private string name;
 
-        public NewItemViewModel()
+        public NewRoutineViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);

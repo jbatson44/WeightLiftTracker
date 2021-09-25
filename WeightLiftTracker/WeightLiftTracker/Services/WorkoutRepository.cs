@@ -34,6 +34,10 @@ namespace WeightLiftTracker.Services
         {
             return database.GetAsync<Routine>(id);
         }
+        public Task<int> DeleteRoutine(Routine routine)
+        {
+            return database.DeleteAsync(routine);
+        }
 
         public Task<List<Exercise>> GetExercisesByRoutine(int routineId)
         {

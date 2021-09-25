@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\NewRoutinePage.xaml.cs">
+      <DependentUpon>NewRoutinePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RoutinesPage.xaml.cs">
       <DependentUpon>RoutinesPage.xaml</DependentUpon>
     </Compile>

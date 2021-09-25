@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using WeightLiftTracker.Models;
 using WeightLiftTracker.Views;
@@ -16,6 +17,7 @@ namespace WeightLiftTracker.ViewModels
         public Command LoadRoutinesCommand { get; }
         public Command AddRoutineCommand { get; }
         public Command<Routine> ItemTapped { get; }
+        public Command<Routine> DeleteRoutineCommand { get; }
 
         public RoutinesViewModel()
         {
@@ -24,6 +26,7 @@ namespace WeightLiftTracker.ViewModels
             LoadRoutinesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             ItemTapped = new Command<Routine>(OnItemSelected);
+            DeleteRoutineCommand = new Command<Routine>(DeleteRoutine);
 
             AddRoutineCommand = new Command(OnAddItem);
         }
@@ -69,7 +72,7 @@ namespace WeightLiftTracker.ViewModels
 
         private async void OnAddItem(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(NewItemPage));
+            await Shell.Current.GoToAsync(nameof(NewRoutinePage));
         }
 
         async void OnItemSelected(Routine routine)
@@ -79,6 +82,31 @@ namespace WeightLiftTracker.ViewModels
 
             // This will push the ItemDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?routineId={routine.Id}");
+        }
+
+        async void DeleteRoutine(Routine routine)
+        {
+            if (routine == null)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                var rows = await App.Database.DeleteRoutine(routine);
+                if (rows > 0)
+                {
+                    Routines.Remove(Routines.SingleOrDefault(i => i.Id == routine.Id));
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
