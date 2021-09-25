@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeightLiftTracker.Models;
-using WeightLiftTracker.ViewModels;
-using WeightLiftTracker.Views;
+﻿using WeightLiftTracker.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace WeightLiftTracker.Views
 {

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 namespace WeightLiftTracker.ViewModels
 {
     [QueryProperty(nameof(RoutineId), "routineId")]
-    public class ItemDetailViewModel : BaseViewModel
+    public class RoutineDetailViewModel : BaseViewModel
     {
         private Exercise _selectedExercise;
 
@@ -32,7 +32,7 @@ namespace WeightLiftTracker.ViewModels
             Title = Routine.Name;
         }
 
-        public ItemDetailViewModel()
+        public RoutineDetailViewModel()
         {
             Title = "None";
             Exercises = new ObservableCollection<Exercise>();
@@ -51,7 +51,7 @@ namespace WeightLiftTracker.ViewModels
             {
                 Exercises.Clear();
                 var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
-                foreach (var exercise in Exercises)
+                foreach (var exercise in exercises)
                 {
                     Exercises.Add(exercise);
                 }
@@ -84,7 +84,7 @@ namespace WeightLiftTracker.ViewModels
 
         private async void OnAddItem(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(NewRoutinePage));
+            await Shell.Current.GoToAsync(nameof(AddExerciseToRoutine));
         }
 
         async void OnItemSelected(Exercise exercise)

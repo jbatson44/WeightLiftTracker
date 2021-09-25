@@ -13,11 +13,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\RoutineDetailPage.xaml.cs">
+      <DependentUpon>RoutineDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\NewRoutinePage.xaml.cs">
       <DependentUpon>NewRoutinePage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\RoutinesPage.xaml.cs">
       <DependentUpon>RoutinesPage.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\AddExerciseToRoutine.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

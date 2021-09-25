@@ -11,8 +11,9 @@ namespace WeightLiftTracker
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(RoutinesPage), typeof(RoutinesPage));
+            //Routing.RegisterRoute(nameof(RoutinesPage), typeof(RoutinesPage));
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
+            Routing.RegisterRoute(nameof(AddExerciseToRoutine), typeof(AddExerciseToRoutine));
             Routing.RegisterRoute(nameof(NewRoutinePage), typeof(NewRoutinePage));
         }
 
