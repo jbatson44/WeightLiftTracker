@@ -11,15 +11,10 @@ namespace WeightLiftTracker
         public AppShell()
         {
             InitializeComponent();
-            //Routing.RegisterRoute(nameof(RoutinesPage), typeof(RoutinesPage));
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(AddExerciseToRoutine), typeof(AddExerciseToRoutine));
             Routing.RegisterRoute(nameof(NewRoutinePage), typeof(NewRoutinePage));
-        }
-
-        private async void OnMenuItemClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
+            Routing.RegisterRoute(nameof(NewExercisePage), typeof(NewExercisePage));
         }
     }
 }

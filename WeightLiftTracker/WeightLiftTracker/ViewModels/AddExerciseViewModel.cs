@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using WeightLiftTracker.Models;
 using Xamarin.Forms;
@@ -10,36 +12,37 @@ namespace WeightLiftTracker.ViewModels
     public class AddExerciseViewModel : BaseViewModel
     {
         private string name;
+        public string Name
+        {
+            get => name;
+            set => SetProperty(ref name, value);
+        }
         public List<Exercise> Exercises { get; set; }
 
         public AddExerciseViewModel()
         {
+            Exercises = new List<Exercise>();
+            LoadExercises();
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             this.PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
-            Exercises = new List<Exercise>();
-            Exercises.Add(new Exercise
+        }
+        async Task LoadExercises()
+        {
+            try
             {
-                Name = "Bench Press",
-                Id = 1
-            });
-            Exercises.Add(new Exercise
+                Exercises = await App.Database.GetAllExercises();
+            }
+            catch (Exception ex)
             {
-                Name = "Tricep Extensions",
-                Id = 1
-            });
+                Debug.WriteLine(ex);
+            }
         }
 
         private bool ValidateSave()
         {
             return !String.IsNullOrWhiteSpace(name);
-        }
-
-        public string Name
-        {
-            get => name;
-            set => SetProperty(ref name, value);
         }
 
         public Command SaveCommand { get; }

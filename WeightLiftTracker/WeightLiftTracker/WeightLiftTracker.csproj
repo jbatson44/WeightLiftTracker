@@ -13,11 +13,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\NewExercisePage.xaml.cs">
+      <DependentUpon>NewExercisePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RoutineDetailPage.xaml.cs">
       <DependentUpon>RoutineDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\NewRoutinePage.xaml.cs">
       <DependentUpon>NewRoutinePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ExercisesListPage.xaml.cs">
+      <DependentUpon>ExercisesListPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\RoutinesPage.xaml.cs">
       <DependentUpon>RoutinesPage.xaml</DependentUpon>
