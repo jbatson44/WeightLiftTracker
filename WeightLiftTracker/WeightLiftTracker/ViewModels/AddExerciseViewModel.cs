@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using WeightLiftTracker.Models;
 using Xamarin.Forms;
 
 namespace WeightLiftTracker.ViewModels
 {
+    [QueryProperty(nameof(RoutineId), "routineId")]
     public class AddExerciseViewModel : BaseViewModel
     {
         private string name;
@@ -17,22 +17,47 @@ namespace WeightLiftTracker.ViewModels
             get => name;
             set => SetProperty(ref name, value);
         }
-        public List<Exercise> Exercises { get; set; }
+        private Exercise selectedExercise;
+        public Exercise SelectedExercise
+        {
+            get => selectedExercise;
+            set => SetProperty(ref selectedExercise, value);
+        }
+        public string RoutineId
+        {
+            set
+            {
+                LoadEverything(value);
+            }
+        }
+        public Routine Routine { get; set; }
+        public async void LoadEverything(string routineId)
+        {
+            Routine = await App.Database.GetRoutineById(int.Parse(routineId));
+            LoadExercises();
+        }
+        private List<Exercise> exercises;
+        public List<Exercise> Exercises 
+        {
+            get => exercises;
+            set => SetProperty(ref exercises, value);
+        }
 
         public AddExerciseViewModel()
         {
-            Exercises = new List<Exercise>();
-            LoadExercises();
-            SaveCommand = new Command(OnSave, ValidateSave);
+            SaveCommand = new Command(OnSave);
             CancelCommand = new Command(OnCancel);
-            this.PropertyChanged +=
+            PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
         }
-        async Task LoadExercises()
+
+        public void LoadExercises()
         {
             try
             {
-                Exercises = await App.Database.GetAllExercises();
+                Exercises = App.Database.GetAllExercisesNotInRoutine(Routine.Id).Result;
+                SelectedExercise = Exercises.FirstOrDefault();
+                //Exercises = App.Database.GetAllExercisesNotInRoutine(Routine.Id).Result;
             }
             catch (Exception ex)
             {
@@ -56,13 +81,7 @@ namespace WeightLiftTracker.ViewModels
 
         private async void OnSave()
         {
-            Routine routine = new Routine()
-            {
-                Id = 1,
-                Name = name
-            };
-
-            await App.Database.SaveRoutineAsync(routine);
+            await App.Database.AddExerciseToRoutine(SelectedExercise.Id, Routine.Id);
 
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");

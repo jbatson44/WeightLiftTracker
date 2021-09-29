@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -12,8 +13,13 @@ namespace WeightLiftTracker.ViewModels
     public class RoutineDetailViewModel : BaseViewModel
     {
         private Exercise _selectedExercise;
-
-        public ObservableCollection<Exercise> Exercises { get; set; }
+        
+        private List<Exercise> exercises;
+        public List<Exercise> Exercises 
+        {
+            get => exercises;
+            set => SetProperty(ref exercises, value);
+        }
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
         public Command<Routine> ItemTapped { get; }
@@ -30,12 +36,13 @@ namespace WeightLiftTracker.ViewModels
         {
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
+            await ExecuteLoadItemsCommand();
         }
 
         public RoutineDetailViewModel()
         {
             Title = "None";
-            Exercises = new ObservableCollection<Exercise>();
+            Exercises = new List<Exercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             //ItemTapped = new Command<Routine>(OnItemSelected);
@@ -84,7 +91,7 @@ namespace WeightLiftTracker.ViewModels
 
         private async void OnAddItem(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(AddExerciseToRoutine));
+            await Shell.Current.GoToAsync($"{nameof(AddExerciseToRoutine)}?routineId={Routine.Id}");
         }
 
         async void OnItemSelected(Exercise exercise)

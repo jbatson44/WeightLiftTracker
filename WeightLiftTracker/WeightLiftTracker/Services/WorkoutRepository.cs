@@ -1,5 +1,6 @@
 ﻿using SQLite;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WeightLiftTracker.Models;
 
@@ -60,6 +61,34 @@ JOIN RoutineExerciseGroups reg
 ON e.Id = reg.ExerciseId
 WHERE reg.RoutineId = ?
 ", routineId);
+        }
+        public Task<List<Exercise>> GetAllExercisesNotInRoutine(int routineId)
+        {
+            var exercises = GetExercisesByRoutine(routineId).Result.Select(x => x.Id).ToList();
+            var list = CommaSeparatedList(exercises);
+            string query = "SELECT * FROM Exercise WHERE Id NOT IN (" + list + ")";
+            return database.QueryAsync<Exercise>(query);
+        }
+        public string CommaSeparatedList(List<int> ids)
+        {
+            string list = "";
+            foreach(int i in ids)
+            {
+                if (list.Length > 0)
+                {
+                    list += ",";
+                }
+                list += i;
+            }
+            return list;
+        }
+        public Task AddExerciseToRoutine(int exerciseId, int routineId)
+        {
+            return database.InsertAsync(new RoutineExerciseGroups
+            {
+                ExerciseId = exerciseId,
+                RoutineId = routineId
+            });
         }
     }
 }
