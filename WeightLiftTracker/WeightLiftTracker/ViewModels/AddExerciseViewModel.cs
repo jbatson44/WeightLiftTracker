@@ -57,7 +57,6 @@ namespace WeightLiftTracker.ViewModels
             {
                 Exercises = App.Database.GetAllExercisesNotInRoutine(Routine.Id).Result;
                 SelectedExercise = Exercises.FirstOrDefault();
-                //Exercises = App.Database.GetAllExercisesNotInRoutine(Routine.Id).Result;
             }
             catch (Exception ex)
             {

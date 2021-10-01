@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using WeightLiftTracker.Models;
 using WeightLiftTracker.Views;
@@ -23,6 +24,7 @@ namespace WeightLiftTracker.ViewModels
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
         public Command<Routine> ItemTapped { get; }
+        public Command<Exercise> DeleteExerciseCommand { get; }
         public string RoutineId
         {
             set
@@ -44,6 +46,7 @@ namespace WeightLiftTracker.ViewModels
             Title = "None";
             Exercises = new List<Exercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            DeleteExerciseCommand = new Command<Exercise>(DeleteExercise);
 
             //ItemTapped = new Command<Routine>(OnItemSelected);
 
@@ -56,12 +59,28 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
-                Exercises.Clear();
-                var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
-                foreach (var exercise in exercises)
-                {
-                    Exercises.Add(exercise);
-                }
+                Exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        async void DeleteExercise(Exercise exercise)
+        {
+            if (exercise == null)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                await App.Database.RemoveExerciseFromRoutine(exercise.Id, Routine.Id);
+                Exercises.Remove(Exercises.SingleOrDefault(i => i.Id == exercise.Id));
             }
             catch (Exception ex)
             {

@@ -90,5 +90,12 @@ WHERE reg.RoutineId = ?
                 RoutineId = routineId
             });
         }
+        public Task RemoveExerciseFromRoutine(int exerciseId, int routineId)
+        {
+            return database.QueryAsync<RoutineExerciseGroups>(@"
+DELETE FROM RoutineExerciseGroups
+WHERE ExerciseId = " + exerciseId +
+" AND RoutineId = ?", routineId);
+        }
     }
 }
