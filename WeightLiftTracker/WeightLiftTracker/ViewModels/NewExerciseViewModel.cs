@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
 using WeightLiftTracker.Models;
 using Xamarin.Forms;
 
@@ -38,6 +36,26 @@ namespace WeightLiftTracker.ViewModels
             {
                 Name = "Chest"
             });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Back"
+            });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Biceps"
+            });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Legs"
+            });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Triceps"
+            });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Shoulders"
+            });
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             PropertyChanged +=
@@ -46,7 +64,7 @@ namespace WeightLiftTracker.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(name);
+            return !String.IsNullOrWhiteSpace(name) && SelectedCategory != null;
         }
 
 

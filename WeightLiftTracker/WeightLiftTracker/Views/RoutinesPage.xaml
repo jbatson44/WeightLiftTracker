@@ -16,6 +16,7 @@
     -->
     <RefreshView x:DataType="local:RoutinesViewModel" Command="{Binding LoadRoutinesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                 ItemsSource="{Binding Routines}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>
@@ -27,19 +28,19 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0"
-                                Text="{Binding Name}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16"
-                                HorizontalOptions="StartAndExpand"
-                                VerticalOptions="Center"/>
+                                    Text="{Binding Name}" 
+                                    LineBreakMode="NoWrap" 
+                                    Style="{DynamicResource ListItemTextStyle}" 
+                                    FontSize="16"
+                                    HorizontalOptions="StartAndExpand"
+                                    VerticalOptions="Center"/>
                             <Button Grid.Column="1"
-                                Text="X"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=DeleteRoutineCommand}"
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Red"
-                                HorizontalOptions="End"
-                                VerticalOptions="Center"/>
+                                    Text="X"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=DeleteRoutineCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="Red"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center"/>
                         </Grid>
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 

@@ -13,6 +13,7 @@
     -->
     <RefreshView x:DataType="viewmodels:RoutineDetailViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                 ItemsSource="{Binding Exercises}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>

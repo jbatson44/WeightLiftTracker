@@ -3,6 +3,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:WeightLiftTracker.Views"
        Title="WeightLiftTracker"
+       FlyoutBackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
        x:Class="WeightLiftTracker.AppShell">
 
     <!--
@@ -41,7 +42,7 @@
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
                                     <Setter Property="BackgroundColor" Value="{x:OnPlatform UWP=Transparent, iOS=White}" />
-                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{StaticResource Primary}" />
+                                    <Setter TargetName="FlyoutItemLabel" Property="Label.TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
                                 </VisualState.Setters>
                             </VisualState>
                             <VisualState x:Name="Selected">

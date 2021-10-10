@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WeightLiftTracker.Models;
+using WeightLiftTracker.Views;
 using Xamarin.Forms;
 
 namespace WeightLiftTracker.ViewModels
@@ -45,10 +46,11 @@ namespace WeightLiftTracker.ViewModels
 
         public AddExerciseViewModel()
         {
-            SaveCommand = new Command(OnSave);
+            SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
+            NewExerciseCommand = new Command(OnAddItem);
         }
 
         public void LoadExercises()
@@ -66,16 +68,21 @@ namespace WeightLiftTracker.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(name);
+            return SelectedExercise != null;
         }
 
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
+        public Command NewExerciseCommand { get; }
 
         private async void OnCancel()
         {
             // This will pop the current page off the navigation stack
             await Shell.Current.GoToAsync("..");
+        }
+        private async void OnAddItem(object obj)
+        {
+            await Shell.Current.GoToAsync(nameof(NewExercisePage));
         }
 
         private async void OnSave()
