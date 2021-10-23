@@ -12,5 +12,6 @@ namespace WeightLiftTracker.Models
 
         [ForeignKey(typeof(Exercise))]
         public int ExerciseId { get; set; }
+        public int GoalSetNumber { get; set; }
     }
 }

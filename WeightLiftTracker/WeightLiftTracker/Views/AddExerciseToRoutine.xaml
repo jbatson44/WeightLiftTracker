@@ -8,18 +8,18 @@
              ios:Page.UseSafeArea="true">
     <ContentPage.Content>
         <StackLayout Spacing="3" Padding="15" BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
-            <Label Text="Name" FontSize="Medium" />
-            <Picker Title="Pick an exercise"
+            <Label Text="Select Exercise" FontSize="Medium" />
+            <Picker Title="Exercises"
                     ItemsSource="{Binding Exercises}"
                     ItemDisplayBinding="{Binding Name}"
                     SelectedItem="{Binding SelectedExercise}">
             </Picker>
-            <StackLayout Orientation="Horizontal">
+            <StackLayout Orientation="Horizontal" Margin="0, 0, 0, 20">
                 <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
                 <Button Text="Add" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
-                <Button Text="New Exercise" Command="{Binding NewExerciseCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Create New Exercise" Command="{Binding NewExerciseCommand}" HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

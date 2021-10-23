@@ -11,11 +11,11 @@
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="viewmodels:RoutineDetailViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <RefreshView x:DataType="viewmodels:RoutineDetailViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
         <CollectionView x:Name="ItemsListView"
                         BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                ItemsSource="{Binding Exercises}"
-                SelectionMode="None">
+                        ItemsSource="{Binding Exercises}"
+                        SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Padding="10" x:DataType="model:Exercise">
@@ -29,7 +29,7 @@
                                    LineBreakMode="NoWrap" 
                                    Style="{DynamicResource ListItemTextStyle}" 
                                    FontSize="16" />
-                            <Button Grid.Column="1"
+                            <Button Grid.Column="1" 
                                     Text="X"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:RoutineDetailViewModel}}, Path=DeleteExerciseCommand}"
                                     CommandParameter="{Binding .}"

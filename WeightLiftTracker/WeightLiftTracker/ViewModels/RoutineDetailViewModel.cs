@@ -13,24 +13,14 @@ namespace WeightLiftTracker.ViewModels
     [QueryProperty(nameof(RoutineId), "routineId")]
     public class RoutineDetailViewModel : BaseViewModel
     {
-        private Exercise _selectedExercise;
-        
-        private List<Exercise> exercises;
-        public List<Exercise> Exercises 
-        {
-            get => exercises;
-            set => SetProperty(ref exercises, value);
-        }
+        public ObservableCollection<Exercise> Exercises { get; }
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
         public Command<Routine> ItemTapped { get; }
         public Command<Exercise> DeleteExerciseCommand { get; }
         public string RoutineId
         {
-            set
-            {
-                LoadEverything(value);
-            }
+            set => LoadEverything(value);
         }
         public Routine Routine { get; set; }
 
@@ -38,13 +28,13 @@ namespace WeightLiftTracker.ViewModels
         {
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
-            await ExecuteLoadItemsCommand();
+            IsBusy = true;
         }
 
         public RoutineDetailViewModel()
         {
             Title = "None";
-            Exercises = new List<Exercise>();
+            Exercises = new ObservableCollection<Exercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
             DeleteExerciseCommand = new Command<Exercise>(DeleteExercise);
 
@@ -56,10 +46,21 @@ namespace WeightLiftTracker.ViewModels
         async Task ExecuteLoadItemsCommand()
         {
             IsBusy = true;
+            if (Routine == null)
+            {
+                IsBusy = false;
+                return;
+            }
+
 
             try
             {
-                Exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
+                Exercises.Clear();
+                var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
+                foreach (var exercise in exercises)
+                {
+                    Exercises.Add(exercise);
+                }
             }
             catch (Exception ex)
             {
@@ -95,17 +96,6 @@ namespace WeightLiftTracker.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
-            SelectedExercise = null;
-        }
-
-        public Exercise SelectedExercise
-        {
-            get => _selectedExercise;
-            set
-            {
-                SetProperty(ref _selectedExercise, value);
-                OnItemSelected(value);
-            }
         }
 
         private async void OnAddItem(object obj)
