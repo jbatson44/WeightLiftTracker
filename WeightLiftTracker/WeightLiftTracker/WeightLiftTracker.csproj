@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\CurrentWorkoutPage.xaml.cs">
+      <DependentUpon>CurrentWorkoutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\NewExercisePage.xaml.cs">
       <DependentUpon>NewExercisePage.xaml</DependentUpon>
     </Compile>
@@ -32,6 +35,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Views\AddExerciseToRoutine.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CurrentWorkoutPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

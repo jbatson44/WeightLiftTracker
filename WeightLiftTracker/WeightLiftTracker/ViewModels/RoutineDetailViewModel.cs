@@ -16,6 +16,7 @@ namespace WeightLiftTracker.ViewModels
         public ObservableCollection<Exercise> Exercises { get; }
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
+        public Command StartWorkoutCommand { get; }
         public Command<Routine> ItemTapped { get; }
         public Command<Exercise> DeleteExerciseCommand { get; }
         public string RoutineId
@@ -41,6 +42,7 @@ namespace WeightLiftTracker.ViewModels
             //ItemTapped = new Command<Routine>(OnItemSelected);
 
             AddExerciseCommand = new Command(OnAddItem);
+            StartWorkoutCommand = new Command(StartWorkout);
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -101,6 +103,10 @@ namespace WeightLiftTracker.ViewModels
         private async void OnAddItem(object obj)
         {
             await Shell.Current.GoToAsync($"{nameof(AddExerciseToRoutine)}?routineId={Routine.Id}");
+        }
+        private async void StartWorkout(object obj)
+        {
+            await Shell.Current.GoToAsync(nameof(CurrentWorkoutPage));
         }
 
         async void OnItemSelected(Exercise exercise)

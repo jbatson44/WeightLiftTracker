@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="WeightLiftTracker.Views.RoutinesPage"
-             Title="{Binding Title}"
+             Title="Routines"
              xmlns:local="clr-namespace:WeightLiftTracker.ViewModels"  
              xmlns:model="clr-namespace:WeightLiftTracker.Models"  
-             x:Name="Browse">
+             x:Name="Browse"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddRoutineCommand}" />
@@ -14,44 +15,45 @@
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="local:RoutinesViewModel" Command="{Binding LoadRoutinesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        <CollectionView x:Name="ItemsListView"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                ItemsSource="{Binding Routines}"
-                SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Routine">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                    Text="{Binding Name}" 
-                                    LineBreakMode="NoWrap" 
-                                    Style="{DynamicResource ListItemTextStyle}" 
-                                    FontSize="16"
-                                    HorizontalOptions="StartAndExpand"
-                                    VerticalOptions="Center"/>
-                            <Button Grid.Column="1"
-                                    Text="X"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=DeleteRoutineCommand}"
-                                    CommandParameter="{Binding .}"
-                                    BackgroundColor="Red"
-                                    HorizontalOptions="End"
-                                    VerticalOptions="Center"/>
-                        </Grid>
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=ItemTapped}"		
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+    <StackLayout>
+        <RefreshView x:DataType="local:RoutinesViewModel" Command="{Binding LoadRoutinesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+            <CollectionView x:Name="ItemsListView"
+                    ItemsSource="{Binding Routines}"
+                    SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" x:DataType="model:Routine">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                        Text="{Binding Name}" 
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="16"
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="Center"/>
+                                <Button Grid.Column="1"
+                                        Text="X"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=DeleteRoutineCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Red"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:RoutinesViewModel}}, Path=ItemTapped}"		
+                                    CommandParameter="{Binding .}">
+                                </TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </StackLayout>
 </ContentPage>

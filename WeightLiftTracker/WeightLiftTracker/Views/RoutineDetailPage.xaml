@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models" x:DataType="viewmodels:RoutineDetailViewModel"
              x:Class="WeightLiftTracker.Views.ItemDetailPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddExerciseCommand}" />
@@ -11,42 +12,49 @@
       x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
       https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
     -->
-    <RefreshView x:DataType="viewmodels:RoutineDetailViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
-        <CollectionView x:Name="ItemsListView"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-                        ItemsSource="{Binding Exercises}"
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Exercise">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   Text="{Binding Name}" 
-                                   LineBreakMode="NoWrap" 
-                                   Style="{DynamicResource ListItemTextStyle}" 
-                                   FontSize="16" />
-                            <Button Grid.Column="1" 
-                                    Text="X"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:RoutineDetailViewModel}}, Path=DeleteExerciseCommand}"
-                                    CommandParameter="{Binding .}"
-                                    BackgroundColor="Red"
-                                    HorizontalOptions="End"
-                                    VerticalOptions="Center"/>
-                        </Grid>
-                        <!--<StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ItemDetailViewModel}}, Path=ItemTapped}"		
-                                CommandParameter="{Binding .}">
-                            </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>-->
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </RefreshView>
+    <StackLayout>
+        <RefreshView x:DataType="viewmodels:RoutineDetailViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+            <CollectionView x:Name="ItemsListView"
+                            ItemsSource="{Binding Exercises}"
+                            SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" x:DataType="model:Exercise">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                       Text="{Binding Name}" 
+                                       LineBreakMode="NoWrap" 
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="16" />
+                                <Button Grid.Column="1" 
+                                        Text="X"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:RoutineDetailViewModel}}, Path=DeleteExerciseCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Red"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+                            <!--<StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    NumberOfTapsRequired="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ItemDetailViewModel}}, Path=ItemTapped}"		
+                                    CommandParameter="{Binding .}">
+                                </TapGestureRecognizer>
+                            </StackLayout.GestureRecognizers>-->
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        <Button Text="Start Workout"
+                Command="{Binding StartWorkoutCommand}"
+                CommandParameter="{Binding .}"
+                BackgroundColor="{StaticResource Primary}"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"/>
+    </StackLayout>
 </ContentPage>

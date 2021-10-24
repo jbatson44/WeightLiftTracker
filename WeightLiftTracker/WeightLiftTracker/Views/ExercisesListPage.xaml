@@ -5,7 +5,8 @@
              Title="{Binding Title}"
              xmlns:local="clr-namespace:WeightLiftTracker.ViewModels"  
              xmlns:model="clr-namespace:WeightLiftTracker.Models"  
-             x:Name="Browse">
+             x:Name="Browse"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Command="{Binding AddExerciseCommand}" />
@@ -16,7 +17,6 @@
     -->
     <RefreshView x:DataType="local:ExercisesListViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
                 ItemsSource="{Binding Exercises}"
                 SelectionMode="None">
             <CollectionView.ItemTemplate>

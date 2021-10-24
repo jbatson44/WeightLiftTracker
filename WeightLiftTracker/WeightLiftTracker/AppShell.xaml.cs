@@ -15,6 +15,7 @@ namespace WeightLiftTracker
             Routing.RegisterRoute(nameof(AddExerciseToRoutine), typeof(AddExerciseToRoutine));
             Routing.RegisterRoute(nameof(NewRoutinePage), typeof(NewRoutinePage));
             Routing.RegisterRoute(nameof(NewExercisePage), typeof(NewExercisePage));
+            Routing.RegisterRoute(nameof(CurrentWorkoutPage), typeof(CurrentWorkoutPage));
         }
     }
 }
