@@ -1,13 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
              x:Class="WeightLiftTracker.Views.CurrentWorkoutPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <StackLayout>
+        <RefreshView x:DataType="viewmodels:CurrentWorkoutViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=OneWay}">
+            <CollectionView 
+                ItemsSource="{Binding Exercises}"
+                IsGrouped="true"
+                >
+                <CollectionView.EmptyView>
+                    <Label Text="Empty :("></Label>
+                </CollectionView.EmptyView>
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout x:DataType="model:WorkoutExercise" Padding="10, 5, 0, 5">
+                            <Label Text="{Binding ExerciseName}" 
+                                    BackgroundColor="Gray"
+                                HorizontalTextAlignment="Center"
+                                FontSize="26" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                        HorizontalTextAlignment="Center"
+                                            Text="Weight"
+                                            FontSize="16" />
+                                <Label Grid.Column="1"
+                                        HorizontalTextAlignment="Center"
+                                            Text="Reps"
+                                            FontSize="16" />
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" x:DataType="model:WorkoutSet">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Entry Grid.Column="0" Grid.Row="0" Text="{Binding Weight, Mode=TwoWay}" FontSize="Medium" Keyboard="Numeric"/>
+                                <Entry Grid.Column="1" Grid.Row="0" Text="{Binding Reps, Mode=TwoWay}" FontSize="Medium" Keyboard="Numeric"/>
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.GroupFooterTemplate>
+                    <DataTemplate>
+                        <StackLayout x:DataType="model:WorkoutExercise" Padding="10" 
+                                    HorizontalOptions="End">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Text="Add Set"
+                                        Grid.Column="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=AddSetCommand}"
+                                CommandParameter="{Binding .}">
+                            </Button>
+                            </Grid>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupFooterTemplate>
+            </CollectionView>
+        </RefreshView>
+    </StackLayout>
 </ContentPage>

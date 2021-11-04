@@ -106,7 +106,7 @@ namespace WeightLiftTracker.ViewModels
         }
         private async void StartWorkout(object obj)
         {
-            await Shell.Current.GoToAsync(nameof(CurrentWorkoutPage));
+            await Shell.Current.GoToAsync($"{nameof(CurrentWorkoutPage)}?routineId={Routine.Id}");
         }
 
         async void OnItemSelected(Exercise exercise)
