@@ -83,7 +83,7 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
-                Exercises.Remove(Exercises.SingleOrDefault(i => i.ExerciseId == exercise.ExerciseId));
+                Exercises.Remove(exercise);
             }
             catch (Exception ex)
             {
