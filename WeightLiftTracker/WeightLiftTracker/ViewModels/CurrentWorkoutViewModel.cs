@@ -154,6 +154,8 @@ namespace WeightLiftTracker.ViewModels
                     }
                 }
             }
+
+            await Shell.Current.GoToAsync("..");
         }
     }
 }
