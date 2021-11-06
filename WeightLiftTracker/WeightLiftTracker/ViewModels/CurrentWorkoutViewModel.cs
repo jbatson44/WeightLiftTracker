@@ -11,6 +11,8 @@ namespace WeightLiftTracker.ViewModels
     [QueryProperty(nameof(RoutineId), "routineId")]
     public class CurrentWorkoutViewModel : BaseViewModel
     {
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public ObservableCollection<WorkoutExercise> Exercises { get; set; }
         public string RoutineId
         {
@@ -20,6 +22,7 @@ namespace WeightLiftTracker.ViewModels
 
         public async void LoadEverything(string routineId)
         {
+            StartTime = DateTime.Now;
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
             IsBusy = true;
@@ -119,9 +122,38 @@ namespace WeightLiftTracker.ViewModels
             //await Shell.Current.GoToAsync($"{nameof(AddExerciseToRoutine)}?routineId={Routine.Id}");
         }
 
-        public void FinishWorkout()
+        public async void FinishWorkout()
         {
-
+            if (EndTime == null)
+            {
+                EndTime = DateTime.Now;
+            }
+            Workout workout = new Workout
+            {
+                StartTime = StartTime,
+                EndTime = EndTime,
+                Routine = Routine
+            };
+            int rows = await App.Database.SaveWorkoutAsync(workout);
+            if (rows > 0)
+            {
+                foreach (var ex in Exercises)
+                {
+                    for (int i = 0; i < ex.Count; i++)
+                    {
+                        Set set = new Set
+                        {
+                            SetNumber = i,
+                            ExerciseId = ex.ExerciseId,
+                            ExerciseName = ex.ExerciseName,
+                            Reps = ex[i].Reps,
+                            Weight = ex[i].Weight,
+                            WorkoutId = workout.Id
+                        };
+                        rows = await App.Database.SaveSetAsync(set);
+                    }
+                }
+            }
         }
     }
 }

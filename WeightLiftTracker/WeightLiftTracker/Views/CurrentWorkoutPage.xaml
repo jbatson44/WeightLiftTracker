@@ -75,5 +75,8 @@
                 </CollectionView.GroupFooterTemplate>
             </CollectionView>
         </RefreshView>
+        <Button Text="Finish Workout"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=FinishWorkoutCommand}">
+        </Button>
     </StackLayout>
 </ContentPage>
