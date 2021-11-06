@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeightLiftTracker.Views.WorkoutLogPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:WeightLiftTracker.ViewModels"  
+             xmlns:model="clr-namespace:WeightLiftTracker.Models"  
+             x:Name="Browse"
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Command="{Binding AddExerciseCommand}" />
+    </ContentPage.ToolbarItems>
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <RefreshView x:DataType="local:WorkoutLogViewModel" Command="{Binding LoadWorkoutsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+        <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Workouts}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="model:Workout">
+                        <!--Routine Name-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0"
+                                   Grid.Row="0"
+                                        Text="{Binding RoutineName}" 
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="24"
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="Center"/>
+                            <Button Grid.Column="1"
+                                    Grid.Row="0"
+                                        Text="X"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:WorkoutLogViewModel}}, Path=DeleteWorkoutCommand}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Red"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                    WidthRequest="50"/>
+                            <!--Date-->
+                            <Label Grid.Column="0"
+                                   Grid.Row="1"
+                                   Text="Date: " 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1"
+                                   Grid.Row="1"
+                                   Text="{Binding StartTime.Date, StringFormat='{0:MM/dd/yyyy}'}" 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"/>
+                            <!--Duration-->
+                            <Label Grid.Column="0"
+                                   Grid.Row="2"
+                                   Text="Duration: " 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1"
+                                   Grid.Row="2"
+                                   Text="{Binding Duration, StringFormat='{0:hh\\:mm}'}" 
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16"
+                                   VerticalOptions="Center"/>
+                        </Grid>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:WorkoutLogViewModel}}, Path=ItemTapped}"
+                                CommandParameter="{Binding .}"
+                                >
+                            </TapGestureRecognizer>
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </RefreshView>
+</ContentPage>

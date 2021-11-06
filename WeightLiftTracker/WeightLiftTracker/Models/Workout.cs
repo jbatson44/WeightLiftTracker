@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace WeightLiftTracker.Models
@@ -8,9 +7,10 @@ namespace WeightLiftTracker.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        [OneToOne("RoutineId")]
-        public Routine Routine { get; set; }
+        public int RoutineId { get; set; }
+        public string RoutineName { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public TimeSpan Duration { get; set; }
     }
 }

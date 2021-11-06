@@ -54,6 +54,11 @@ WHERE reg.RoutineId = ?
             string query = "SELECT * FROM Exercise WHERE Id NOT IN (" + list + ")";
             return database.QueryAsync<Exercise>(query);
         }
+
+        public Task<List<Workout>> GetAllWorkouts()
+        {
+            return database.Table<Workout>().ToListAsync();
+        }
         #endregion
 
         #region Insert Methods
@@ -104,6 +109,18 @@ WHERE reg.RoutineId = ?
 DELETE FROM RoutineExerciseGroups
 WHERE ExerciseId = " + exerciseId +
 " AND RoutineId = ?", routineId);
+        }
+
+        public Task DeleteSetsFromWorkout(int workoutId)
+        {
+            return database.QueryAsync<Set>(@"
+DELETE FROM [Set]
+WHERE WorkoutId = ?", workoutId);
+        }
+
+        public Task<int> DeleteWorkout(Workout workout)
+        {
+            return database.DeleteAsync(workout);
         }
         #endregion
 

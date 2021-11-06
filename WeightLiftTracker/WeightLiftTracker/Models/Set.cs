@@ -8,10 +8,8 @@ namespace WeightLiftTracker.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        [OneToOne("ExerciseId")]
         public int ExerciseId { get; set; }
         public string ExerciseName { get; set; }
-        [OneToOne("WorkoutId")]
         public int WorkoutId { get; set; }
         public int Reps { get; set; }
         public int SetNumber { get; set; }

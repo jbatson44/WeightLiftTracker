@@ -11,8 +11,9 @@ namespace WeightLiftTracker.ViewModels
     [QueryProperty(nameof(RoutineId), "routineId")]
     public class CurrentWorkoutViewModel : BaseViewModel
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
         public ObservableCollection<WorkoutExercise> Exercises { get; set; }
         public string RoutineId
         {
@@ -22,7 +23,6 @@ namespace WeightLiftTracker.ViewModels
 
         public async void LoadEverything(string routineId)
         {
-            StartTime = DateTime.Now;
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
             IsBusy = true;
@@ -35,6 +35,8 @@ namespace WeightLiftTracker.ViewModels
         public Command<WorkoutExercise> DeleteExerciseCommand { get; }
         public CurrentWorkoutViewModel()
         {
+            Date = DateTime.Today;
+            StartTime = DateTime.Now.TimeOfDay;
             Exercises = new ObservableCollection<WorkoutExercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
             DeleteExerciseCommand = new Command<WorkoutExercise>(DeleteExercise);
@@ -126,13 +128,15 @@ namespace WeightLiftTracker.ViewModels
         {
             if (EndTime == null)
             {
-                EndTime = DateTime.Now;
+                EndTime = DateTime.Now.TimeOfDay;
             }
             Workout workout = new Workout
             {
-                StartTime = StartTime,
-                EndTime = EndTime,
-                Routine = Routine
+                StartTime = Date.Date + StartTime,
+                EndTime = Date.Date + EndTime.GetValueOrDefault(),
+                RoutineId = Routine.Id,
+                RoutineName = Routine.Name,
+                Duration = EndTime.GetValueOrDefault() - StartTime
             };
             int rows = await App.Database.SaveWorkoutAsync(workout);
             if (rows > 0)
