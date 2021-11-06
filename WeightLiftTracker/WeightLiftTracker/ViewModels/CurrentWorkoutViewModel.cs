@@ -145,16 +145,19 @@ namespace WeightLiftTracker.ViewModels
                 {
                     for (int i = 0; i < ex.Count; i++)
                     {
-                        Set set = new Set
+                        if (ex[i].Reps > 0)
                         {
-                            SetNumber = i,
-                            ExerciseId = ex.ExerciseId,
-                            ExerciseName = ex.ExerciseName,
-                            Reps = ex[i].Reps,
-                            Weight = ex[i].Weight,
-                            WorkoutId = workout.Id
-                        };
-                        rows = await App.Database.SaveSetAsync(set);
+                            Set set = new Set
+                            {
+                                SetNumber = i,
+                                ExerciseId = ex.ExerciseId,
+                                ExerciseName = ex.ExerciseName,
+                                Reps = ex[i].Reps,
+                                Weight = ex[i].Weight,
+                                WorkoutId = workout.Id
+                            };
+                            rows = await App.Database.SaveSetAsync(set);
+                        }
                     }
                 }
             }

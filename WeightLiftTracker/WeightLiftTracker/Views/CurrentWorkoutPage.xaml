@@ -42,25 +42,42 @@
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
                         <StackLayout x:DataType="model:WorkoutExercise" Padding="10, 5, 0, 5">
-                            <Label Text="{Binding ExerciseName}" 
-                                    BackgroundColor="Gray"
-                                HorizontalTextAlignment="Center"
-                                FontSize="26" />
-                            <Button Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteExerciseCommand}"
-                                    CommandParameter="{Binding .}"
-                                    BackgroundColor="Red"
-                                    Text="X">
-                            </Button>
-                            <Grid>
+                            <Grid
+                                       BackgroundColor="Gray">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0"
+                                       Grid.Column="0"
+                                       Text="{Binding ExerciseName}" 
+                                       HorizontalTextAlignment="Center"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="Center"
+                                       FontSize="26" />
+                                <Button Grid.Row="0"
+                                        Grid.Column="1"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteExerciseCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="Red"
+                                    Text="X"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        WidthRequest="50">
+                                </Button>
+                                <Label Grid.Row="1"
+                                       Grid.Column="0"
+                                    BackgroundColor="DarkSlateGray"
                                         HorizontalTextAlignment="Center"
                                             Text="Weight"
                                             FontSize="16" />
-                                <Label Grid.Column="1"
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                    BackgroundColor="DarkSlateGray"
                                         HorizontalTextAlignment="Center"
                                             Text="Reps"
                                             FontSize="16" />
