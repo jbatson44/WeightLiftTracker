@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\PreviousWorkoutPage.xaml.cs">
+      <DependentUpon>PreviousWorkoutPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CurrentWorkoutPage.xaml.cs">
       <DependentUpon>CurrentWorkoutPage.xaml</DependentUpon>
     </Compile>

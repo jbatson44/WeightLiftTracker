@@ -79,7 +79,7 @@ namespace WeightLiftTracker.ViewModels
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?routineId={exercise.Id}");
+            await Shell.Current.GoToAsync($"{nameof(PreviousWorkoutPage)}?workoutId={workout.Id}");
         }
 
         async void DeleteWorkout(Workout workout)

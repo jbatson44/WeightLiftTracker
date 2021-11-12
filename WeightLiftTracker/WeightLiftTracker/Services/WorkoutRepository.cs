@@ -59,6 +59,21 @@ WHERE reg.RoutineId = ?
         {
             return database.Table<Workout>().ToListAsync();
         }
+
+        public Task<Workout> GetWorkoutById(int id)
+        {
+            return database.GetAsync<Workout>(id);
+        }
+
+        public Task<List<Set>> GetSetsByWorkout(int workoutId)
+        {
+            return database.QueryAsync<Set>(@"
+SELECT * 
+FROM [Set]
+WHERE WorkoutId = ?
+ORDER BY ExerciseId, SetNumber Asc
+", workoutId);
+        }
         #endregion
 
         #region Insert Methods
