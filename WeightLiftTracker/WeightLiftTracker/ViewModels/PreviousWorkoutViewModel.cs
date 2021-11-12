@@ -65,11 +65,13 @@ namespace WeightLiftTracker.ViewModels
                     Exercises = new ObservableCollection<WorkoutExercise>();
                     foreach (var set in sets)
                     {
-                        if (Exercises.Any(e => e.ExerciseId == set.ExerciseId))
+                        var exercise = Exercises.FirstOrDefault(e => e.ExerciseId == set.ExerciseId);
+                        if (exercise != null)
                         {
-                            Exercises.Where(e => e.ExerciseId == set.ExerciseId).FirstOrDefault().Add(
-                                new WorkoutSet()
+                            exercise.Add(
+                                new WorkoutSet(exercise.ExerciseName)
                                 {
+                                    Id = exercise.Count,
                                     Weight = set.Weight,
                                     Reps = set.Reps
                                 }
@@ -78,13 +80,13 @@ namespace WeightLiftTracker.ViewModels
                         else
                         {
                             ObservableCollection<WorkoutSet> ws = new ObservableCollection<WorkoutSet>
-                        {
-                            new WorkoutSet()
                             {
-                                Weight = set.Weight,
-                                Reps = set.Reps
-                            }
-                        };
+                                new WorkoutSet(exercise.ExerciseName)
+                                {
+                                    Weight = set.Weight,
+                                    Reps = set.Reps
+                                }
+                            };
                             WorkoutExercise we = new WorkoutExercise(set.ExerciseId, set.ExerciseName, ws);
                             Exercises.Add(we);
                         }
@@ -127,7 +129,7 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
-                Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId).Add(new WorkoutSet());
+                Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId).Add(new WorkoutSet(exercise.ExerciseName) { Id = exercise.Count });
             }
             catch (Exception ex)
             {

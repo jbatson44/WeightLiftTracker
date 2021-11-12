@@ -25,7 +25,7 @@ namespace WeightLiftTracker.ViewModels
         {
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
-            IsBusy = true;
+            await ExecuteLoadItemsCommand();
         }
 
         public Command LoadExercisesCommand { get; }
@@ -33,27 +33,27 @@ namespace WeightLiftTracker.ViewModels
         public Command<WorkoutExercise> AddSetCommand { get; }
         public Command FinishWorkoutCommand { get; }
         public Command<WorkoutExercise> DeleteExerciseCommand { get; }
+        public Command<WorkoutSet> DeleteSetCommand { get; }
         public CurrentWorkoutViewModel()
         {
             Date = DateTime.Today;
             StartTime = DateTime.Now.TimeOfDay;
             Exercises = new ObservableCollection<WorkoutExercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
-            DeleteExerciseCommand = new Command<WorkoutExercise>(DeleteExercise);
-            AddSetCommand = new Command<WorkoutExercise>(AddSet);
 
+            DeleteExerciseCommand = new Command<WorkoutExercise>(DeleteExercise);
+            DeleteSetCommand = new Command<WorkoutSet>(DeleteSet);
+
+            AddSetCommand = new Command<WorkoutExercise>(AddSet);
             AddExerciseCommand = new Command(OnAddItem);
             FinishWorkoutCommand = new Command(FinishWorkout);
         }
         public async Task ExecuteLoadItemsCommand()
         {
-            IsBusy = true;
             if (Routine == null)
             {
-                IsBusy = false;
                 return;
             }
-
 
             try
             {
@@ -63,9 +63,9 @@ namespace WeightLiftTracker.ViewModels
                     foreach (var exercise in exercises)
                     {
                         var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
-                    {
-                        new WorkoutSet()
-                    });
+                        {
+                            new WorkoutSet(exercise.Name)
+                        });
                         Exercises.Add(newEx);
                     }
                 }
@@ -74,17 +74,11 @@ namespace WeightLiftTracker.ViewModels
             {
                 Debug.WriteLine(ex);
             }
-            finally
-            {
-                IsBusy = false;
-            }
         }
         public void DeleteExercise(WorkoutExercise exercise)
         {
             if (exercise == null)
                 return;
-
-            IsBusy = true;
 
             try
             {
@@ -94,9 +88,24 @@ namespace WeightLiftTracker.ViewModels
             {
                 Debug.WriteLine(ex);
             }
-            finally
+        }
+        public void DeleteSet(WorkoutSet set)
+        {
+            if (set == null)
+                return;
+
+            try
             {
-                IsBusy = false;
+                var exercise = Exercises.FirstOrDefault(x=>x.ExerciseName == set.ExerciseName);
+                exercise.Remove(exercise.FirstOrDefault(x => x.Id == set.Id));
+                if (exercise.Count == 0)
+                {
+                    DeleteExercise(exercise);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
         }
         public void AddSet(WorkoutExercise exercise)
@@ -106,7 +115,10 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
-                Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId).Add(new WorkoutSet());
+                var newSet = new WorkoutSet(exercise.ExerciseName);
+                var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
+                newSet.Id = ex.Count;
+                ex.Add(newSet);
             }
             catch (Exception ex)
             {
