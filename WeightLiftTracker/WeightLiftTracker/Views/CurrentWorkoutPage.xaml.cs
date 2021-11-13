@@ -17,5 +17,11 @@ namespace WeightLiftTracker.Views
             InitializeComponent();
             BindingContext = new CurrentWorkoutViewModel();
         }
+
+        private void Entry_Focused(object sender, FocusEventArgs e)
+        {
+            Entry entry = (Entry)sender;
+            entry.Text = "";
+        }
     }
 }

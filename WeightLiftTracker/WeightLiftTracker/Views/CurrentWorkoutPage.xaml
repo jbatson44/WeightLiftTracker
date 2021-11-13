@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models" x:DataType="viewmodels:CurrentWorkoutViewModel"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models" xmlns:elements="clr-namespace:WeightLiftTracker.Views.Elements" x:DataType="viewmodels:CurrentWorkoutViewModel"
     BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
     x:Class="WeightLiftTracker.Views.CurrentWorkoutPage">
     <ContentPage.ToolbarItems>
@@ -122,12 +122,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
-                            <Entry 
+                            <Entry
+                                Focused="Entry_Focused"
                                 Grid.Column="0" 
                                 Text="{Binding Weight, Mode=TwoWay}" 
                                 FontSize="Medium" 
                                 Keyboard="Numeric"/>
                             <Entry 
+                                Focused="Entry_Focused"
                                 Grid.Column="1" 
                                 Text="{Binding Reps, Mode=TwoWay}" 
                                 FontSize="Medium" 

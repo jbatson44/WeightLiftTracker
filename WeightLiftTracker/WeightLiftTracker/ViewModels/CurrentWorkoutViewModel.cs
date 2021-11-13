@@ -65,6 +65,10 @@ namespace WeightLiftTracker.ViewModels
                         var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
                         {
                             new WorkoutSet(exercise.Name)
+                            {
+                                Reps = 0,
+                                Weight = 0
+                            }
                         });
                         Exercises.Add(newEx);
                     }
@@ -115,7 +119,11 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
-                var newSet = new WorkoutSet(exercise.ExerciseName);
+                var newSet = new WorkoutSet(exercise.ExerciseName)
+                {
+                    Weight = 0,
+                    Reps = 0
+                };
                 var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
                 newSet.Id = ex.Count;
                 ex.Add(newSet);
