@@ -20,10 +20,14 @@ namespace WeightLiftTracker.Models
         public WorkoutSet(string name)
         {
             ExerciseName = name;
+            Reps = null;
+            Weight = null;
         }
         public int Id { get; set; }
         public string ExerciseName { get; set; }
-        public int Reps { get; set; }
-        public int Weight { get; set; }
+        public int? Reps { get; set; }
+        public int? Weight { get; set; }
+        public int PrevReps { get; set; }
+        public int PrevWeight { get; set; }
     }
 }

@@ -123,12 +123,14 @@
                                 <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             <Entry
+                                Placeholder="{Binding PrevWeight, Mode=TwoWay}"
                                 Focused="Entry_Focused"
                                 Grid.Column="0" 
                                 Text="{Binding Weight, Mode=TwoWay}" 
                                 FontSize="Medium" 
                                 Keyboard="Numeric"/>
                             <Entry 
+                                Placeholder="{Binding PrevReps, Mode=TwoWay}"
                                 Focused="Entry_Focused"
                                 Grid.Column="1" 
                                 Text="{Binding Reps, Mode=TwoWay}" 

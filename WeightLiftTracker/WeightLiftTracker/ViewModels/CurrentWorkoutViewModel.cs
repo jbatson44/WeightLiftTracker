@@ -15,6 +15,7 @@ namespace WeightLiftTracker.ViewModels
         public TimeSpan StartTime { get; set; }
         public TimeSpan? EndTime { get; set; }
         public ObservableCollection<WorkoutExercise> Exercises { get; set; }
+        public ObservableCollection<WorkoutExercise> PreviousExercises { get; set; }
         public string RoutineId
         {
             set => LoadEverything(value);
@@ -39,6 +40,7 @@ namespace WeightLiftTracker.ViewModels
             Date = DateTime.Today;
             StartTime = DateTime.Now.TimeOfDay;
             Exercises = new ObservableCollection<WorkoutExercise>();
+            PreviousExercises = new ObservableCollection<WorkoutExercise>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             DeleteExerciseCommand = new Command<WorkoutExercise>(DeleteExercise);
@@ -62,12 +64,26 @@ namespace WeightLiftTracker.ViewModels
                     var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
                     foreach (var exercise in exercises)
                     {
+                        var sets = await App.Database.GetLastWorkoutStatsByExerciseId(exercise.Id);
+                        var prevWorkoutSets = new ObservableCollection<WorkoutSet>();
+                        foreach(var set in sets)
+                        {
+                            prevWorkoutSets.Add(new WorkoutSet(set.ExerciseName)
+                            {
+                                Id = set.Id,
+                                ExerciseName = set.ExerciseName,
+                                PrevReps = set.Reps,
+                                PrevWeight = set.Weight
+                            });
+                        }
+                        PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, prevWorkoutSets));
+                        var prevExSet = PreviousExercises.FirstOrDefault(x => x.ExerciseId == exercise.Id).FirstOrDefault();
                         var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
                         {
                             new WorkoutSet(exercise.Name)
                             {
-                                Reps = 0,
-                                Weight = 0
+                                PrevReps = prevExSet != null ? prevExSet.PrevReps : 0,
+                                PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0
                             }
                         });
                         Exercises.Add(newEx);
@@ -119,13 +135,14 @@ namespace WeightLiftTracker.ViewModels
 
             try
             {
+                var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
+                var prevExSet = PreviousExercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId).ElementAtOrDefault(ex.Count);
                 var newSet = new WorkoutSet(exercise.ExerciseName)
                 {
-                    Weight = 0,
-                    Reps = 0
+                    PrevReps = prevExSet != null ? prevExSet.PrevReps : 0,
+                    PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0,
+                    Id = ex.Count,
                 };
-                var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
-                newSet.Id = ex.Count;
                 ex.Add(newSet);
             }
             catch (Exception ex)
@@ -172,8 +189,8 @@ namespace WeightLiftTracker.ViewModels
                                 SetNumber = i,
                                 ExerciseId = ex.ExerciseId,
                                 ExerciseName = ex.ExerciseName,
-                                Reps = ex[i].Reps,
-                                Weight = ex[i].Weight,
+                                Reps = ex[i].Reps ?? 0,
+                                Weight = ex[i].Weight ?? 0,
                                 WorkoutId = workout.Id
                             };
                             rows = await App.Database.SaveSetAsync(set);

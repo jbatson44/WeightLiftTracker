@@ -47,6 +47,18 @@ WHERE reg.RoutineId = ?
 ", routineId);
         }
 
+        public Task<List<Set>> GetLastWorkoutStatsByExerciseId(int exerciseId)
+        {
+            return database.QueryAsync<Set>(@"
+SELECT * 
+FROM [Set] s
+JOIN Workout w
+ON w.Id = s.WorkoutId
+WHERE w.EndTime = (SELECT EndTime FROM Workout ORDER BY EndTime DESC LIMIT 1)
+AND s.ExerciseId = ?
+", exerciseId);
+        }
+
         public Task<List<Exercise>> GetAllExercisesNotInRoutine(int routineId)
         {
             var exercises = GetExercisesByRoutine(routineId).Result.Select(x => x.Id).ToList();
