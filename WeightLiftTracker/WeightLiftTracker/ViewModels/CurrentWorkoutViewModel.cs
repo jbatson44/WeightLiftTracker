@@ -122,6 +122,10 @@ namespace WeightLiftTracker.ViewModels
                 {
                     DeleteExercise(exercise);
                 }
+                else
+                {
+                    SetExercisePreviousSetData(exercise);
+                }
             }
             catch (Exception ex)
             {
@@ -154,6 +158,17 @@ namespace WeightLiftTracker.ViewModels
         public void OnAppearing()
         {
             IsBusy = true;
+        }
+
+        public void SetExercisePreviousSetData(WorkoutExercise exercise)
+        {
+            var previousExerciseData = PreviousExercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
+            for (var i = 0; i < exercise.Count; i++)
+            {
+                var prevExSet = previousExerciseData.ElementAtOrDefault(i);
+                exercise[i].PrevReps = prevExSet != null ? prevExSet.PrevReps : 0;
+                exercise[i].PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0;
+            }
         }
 
         private async void OnAddItem(object obj)

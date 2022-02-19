@@ -54,8 +54,8 @@ SELECT *
 FROM [Set] s
 JOIN Workout w
 ON w.Id = s.WorkoutId
-WHERE w.EndTime = (SELECT EndTime FROM Workout ORDER BY EndTime DESC LIMIT 1)
-AND s.ExerciseId = ?
+WHERE s.ExerciseId = ?
+ORDER BY w.EndTime
 ", exerciseId);
         }
 
