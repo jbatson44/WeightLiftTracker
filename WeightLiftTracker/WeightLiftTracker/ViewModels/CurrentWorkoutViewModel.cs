@@ -64,29 +64,13 @@ namespace WeightLiftTracker.ViewModels
                     var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
                     foreach (var exercise in exercises)
                     {
-                        var sets = await App.Database.GetLastWorkoutStatsByExerciseId(exercise.Id);
-                        var prevWorkoutSets = new ObservableCollection<WorkoutSet>();
-                        foreach(var set in sets)
-                        {
-                            prevWorkoutSets.Add(new WorkoutSet(set.ExerciseName)
-                            {
-                                Id = set.Id,
-                                ExerciseName = set.ExerciseName,
-                                PrevReps = set.Reps,
-                                PrevWeight = set.Weight
-                            });
-                        }
-                        PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, prevWorkoutSets));
-                        var prevExSet = PreviousExercises.FirstOrDefault(x => x.ExerciseId == exercise.Id).FirstOrDefault();
+                        await GetPreviousWorkoutSetData(exercise);
                         var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
                         {
                             new WorkoutSet(exercise.Name)
-                            {
-                                PrevReps = prevExSet != null ? prevExSet.PrevReps : 0,
-                                PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0
-                            }
                         });
                         Exercises.Add(newEx);
+                        SetExercisePreviousSetData(newEx);
                     }
                 }
             }
@@ -140,14 +124,12 @@ namespace WeightLiftTracker.ViewModels
             try
             {
                 var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
-                var prevExSet = PreviousExercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId).ElementAtOrDefault(ex.Count);
                 var newSet = new WorkoutSet(exercise.ExerciseName)
                 {
-                    PrevReps = prevExSet != null ? prevExSet.PrevReps : 0,
-                    PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0,
-                    Id = ex.Count,
+                    Id = ex.Count
                 };
                 ex.Add(newSet);
+                SetExercisePreviousSetData(ex);
             }
             catch (Exception ex)
             {
@@ -169,6 +151,23 @@ namespace WeightLiftTracker.ViewModels
                 exercise[i].PrevReps = prevExSet != null ? prevExSet.PrevReps : 0;
                 exercise[i].PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0;
             }
+        }
+
+        public async Task GetPreviousWorkoutSetData(Exercise exercise)
+        {
+            var sets = await App.Database.GetLastWorkoutStatsByExerciseId(exercise.Id);
+            var prevWorkoutSets = new ObservableCollection<WorkoutSet>();
+            foreach (var set in sets)
+            {
+                prevWorkoutSets.Add(new WorkoutSet(set.ExerciseName)
+                {
+                    Id = set.Id,
+                    ExerciseName = set.ExerciseName,
+                    PrevReps = set.Reps,
+                    PrevWeight = set.Weight
+                });
+            }
+            PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, prevWorkoutSets));
         }
 
         private async void OnAddItem(object obj)

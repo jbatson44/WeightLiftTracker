@@ -55,7 +55,12 @@ FROM [Set] s
 JOIN Workout w
 ON w.Id = s.WorkoutId
 WHERE s.ExerciseId = ?
-ORDER BY w.EndTime
+AND w.Id = (SELECT wo.Id 
+                 FROM [Set] se 
+                 JOIN Workout wo 
+                 ON wo.Id = se.WorkoutId 
+                 WHERE se.ExerciseId = s.ExerciseId 
+                 ORDER BY wo.EndTime DESC LIMIT 1)
 ", exerciseId);
         }
 
