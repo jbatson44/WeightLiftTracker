@@ -78,8 +78,6 @@ namespace WeightLiftTracker.ViewModels
             if (exercise == null)
                 return;
 
-            IsBusy = true;
-
             try
             {
                 await App.Database.RemoveExerciseFromRoutine(exercise.Id, Routine.Id);
@@ -88,10 +86,6 @@ namespace WeightLiftTracker.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
 

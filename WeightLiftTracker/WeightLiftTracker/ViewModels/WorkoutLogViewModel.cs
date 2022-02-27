@@ -87,8 +87,6 @@ namespace WeightLiftTracker.ViewModels
             if (workout == null)
                 return;
 
-            IsBusy = true;
-
             try
             {
                 await App.Database.DeleteSetsFromWorkout(workout.Id);
@@ -102,10 +100,6 @@ namespace WeightLiftTracker.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
     }

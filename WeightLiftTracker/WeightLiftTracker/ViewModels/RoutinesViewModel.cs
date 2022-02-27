@@ -88,8 +88,6 @@ namespace WeightLiftTracker.ViewModels
             if (routine == null)
                 return;
 
-            IsBusy = true;
-
             try
             {
                 var rows = await App.Database.DeleteRoutine(routine);
@@ -101,10 +99,6 @@ namespace WeightLiftTracker.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
     }
