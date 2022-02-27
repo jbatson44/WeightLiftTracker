@@ -18,10 +18,25 @@
     <RefreshView x:DataType="local:ExercisesListViewModel" Command="{Binding LoadExercisesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         <CollectionView x:Name="ItemsListView"
                 ItemsSource="{Binding Exercises}"
+                        IsGrouped="True"
                 SelectionMode="None">
+
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10" x:DataType="model:ExerciseList" BackgroundColor="Gray">
+                        <Label Text="{Binding Category}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16"
+                                HorizontalOptions="StartAndExpand"
+                                VerticalOptions="Center">
+                        </Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="10" x:DataType="model:Exercise">
+                    <StackLayout Padding="5, 0, 5, 20" x:DataType="model:Exercise">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -52,6 +67,12 @@
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.GroupFooterTemplate>
+                <DataTemplate>
+                    <StackLayout >
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.GroupFooterTemplate>
         </CollectionView>
     </RefreshView>
 </ContentPage>

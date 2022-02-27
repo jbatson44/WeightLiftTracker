@@ -13,7 +13,7 @@ namespace WeightLiftTracker.ViewModels
     {
         private Exercise _selectedExercise;
 
-        public ObservableCollection<Exercise> Exercises { get; }
+        public ObservableCollection<ExerciseList> Exercises { get; }
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
         public Command<Exercise> ItemTapped { get; }
@@ -22,7 +22,7 @@ namespace WeightLiftTracker.ViewModels
         public ExercisesListViewModel()
         {
             Title = "Exercises";
-            Exercises = new ObservableCollection<Exercise>();
+            Exercises = new ObservableCollection<ExerciseList>();
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             ItemTapped = new Command<Exercise>(OnItemSelected);
@@ -38,10 +38,10 @@ namespace WeightLiftTracker.ViewModels
             try
             {
                 Exercises.Clear();
-                var exercises = await App.Database.GetAllExercises();
-                foreach (var exercise in exercises)
+                var categories = (await App.Database.GetAllExercises()).GroupBy(x=>x.Category);
+                foreach (var category in categories)
                 {
-                    Exercises.Add(exercise);
+                    Exercises.Add(new ExerciseList(category.Key, new ObservableCollection<Exercise>(category.ToList())));
                 }
             }
             catch (Exception ex)
@@ -96,7 +96,13 @@ namespace WeightLiftTracker.ViewModels
                 var rows = await App.Database.DeleteExercise(exercise);
                 if (rows > 0)
                 {
-                    Exercises.Remove(Exercises.SingleOrDefault(i => i.Id == exercise.Id));
+                    var exGroup = Exercises.SingleOrDefault(i => i.Category == exercise.Category);
+                    exGroup.Remove(exGroup.SingleOrDefault(x=>x.Id == exercise.Id));
+                    if (exGroup.Count <= 0)
+                    {
+                        Exercises.Remove(exGroup);
+                    }
+
                 }
             }
             catch (Exception ex)
