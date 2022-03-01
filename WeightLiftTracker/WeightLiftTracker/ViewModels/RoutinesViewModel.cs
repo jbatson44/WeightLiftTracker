@@ -80,7 +80,7 @@ namespace WeightLiftTracker.ViewModels
             if (routine == null)
                 return;
 
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?routineId={routine.Id}");
+            await Shell.Current.GoToAsync($"{nameof(RoutineDetailPage)}?routineId={routine.Id}");
         }
 
         async void DeleteRoutine(Routine routine)

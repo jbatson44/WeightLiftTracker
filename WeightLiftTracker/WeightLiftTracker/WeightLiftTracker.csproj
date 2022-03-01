@@ -19,6 +19,9 @@
     <Compile Update="Views\CurrentWorkoutPage.xaml.cs">
       <DependentUpon>CurrentWorkoutPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ExerciseDetailPage.xaml.cs">
+      <DependentUpon>ExerciseDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\WorkoutLogPage.xaml.cs">
       <DependentUpon>WorkoutLogPage.xaml</DependentUpon>
     </Compile>

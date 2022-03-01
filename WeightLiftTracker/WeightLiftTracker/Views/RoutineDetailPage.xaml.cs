@@ -4,10 +4,10 @@ using Xamarin.Forms;
 
 namespace WeightLiftTracker.Views
 {
-    public partial class ItemDetailPage : ContentPage
+    public partial class RoutineDetailPage : ContentPage
     {
         RoutineDetailViewModel _viewModel;
-        public ItemDetailPage()
+        public RoutineDetailPage()
         {
             InitializeComponent();
             BindingContext = _viewModel = new RoutineDetailViewModel();

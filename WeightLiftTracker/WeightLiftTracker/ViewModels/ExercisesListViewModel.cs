@@ -80,8 +80,7 @@ namespace WeightLiftTracker.ViewModels
             if (exercise == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?routineId={exercise.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ExerciseDetailPage)}?exerciseId={exercise.Id}");
         }
 
         async void DeleteExercise(Exercise exercise)

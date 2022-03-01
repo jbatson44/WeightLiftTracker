@@ -31,6 +31,11 @@ namespace WeightLiftTracker.Services
             return database.GetAsync<Routine>(id);
         }
 
+        public Task<Exercise> GetExerciseById(int id)
+        {
+            return database.GetAsync<Exercise>(id);
+        }
+
         public Task<List<Exercise>> GetAllExercises()
         {
             return database.Table<Exercise>().ToListAsync();
