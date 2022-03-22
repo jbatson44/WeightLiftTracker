@@ -36,43 +36,36 @@
             </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Padding="5, 0, 5, 20" x:DataType="model:Exercise">
+                    <SwipeView x:DataType="model:Exercise">
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type local:ExercisesListViewModel}}, Path=DeleteExerciseCommand}"
+                                   CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                Text="{Binding Name}" 
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Name}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16"
+                                FontSize="20"
                                 HorizontalOptions="StartAndExpand"
                                 VerticalOptions="Center"/>
-                            <Button Grid.Column="1"
-                                Text="X"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ExercisesListViewModel}}, Path=DeleteExerciseCommand}"
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Red"
-                                HorizontalOptions="End"
-                                VerticalOptions="Center"/>
                         </Grid>
-                        <StackLayout.GestureRecognizers>
+                        <SwipeView.GestureRecognizers>
                             <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:ExercisesListViewModel}}, Path=ItemTapped}"		
                                 CommandParameter="{Binding .}">
                             </TapGestureRecognizer>
-                        </StackLayout.GestureRecognizers>
-                    </StackLayout>
+                        </SwipeView.GestureRecognizers>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-            <CollectionView.GroupFooterTemplate>
-                <DataTemplate>
-                    <StackLayout >
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.GroupFooterTemplate>
         </CollectionView>
     </RefreshView>
 </ContentPage>

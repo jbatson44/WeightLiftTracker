@@ -113,14 +113,21 @@
             </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout 
+                    <SwipeView 
                         Padding="10" 
                         x:DataType="model:WorkoutSet">
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteSetCommand}"
+                                   CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             <Entry
                                 Placeholder="{Binding PrevWeight, Mode=TwoWay}"
@@ -136,19 +143,8 @@
                                 Text="{Binding Reps, Mode=TwoWay}" 
                                 FontSize="Medium" 
                                 Keyboard="Numeric"/>
-                            <Button
-                                Grid.Column="2"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteSetCommand}"
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Red"
-                                Text="X"
-                                HorizontalOptions="End"
-                                VerticalOptions="Center"
-                                HeightRequest="30"
-                                WidthRequest="50">
-                            </Button>
                         </Grid>
-                    </StackLayout>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.GroupFooterTemplate>

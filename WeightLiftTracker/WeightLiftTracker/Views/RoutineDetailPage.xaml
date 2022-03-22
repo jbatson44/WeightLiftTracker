@@ -19,33 +19,25 @@
                             SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Padding="10" x:DataType="model:Exercise">
+                        <SwipeView Padding="10" x:DataType="model:Exercise">
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:RoutineDetailViewModel}}, Path=DeleteExerciseCommand}"
+                                   CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
-                                       Text="{Binding Name}" 
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding Name}" 
                                        LineBreakMode="NoWrap" 
                                        Style="{DynamicResource ListItemTextStyle}" 
-                                       FontSize="16" />
-                                <Button Grid.Column="1" 
-                                        Text="X"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:RoutineDetailViewModel}}, Path=DeleteExerciseCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="Red"
-                                        HorizontalOptions="End"
-                                        VerticalOptions="Center"/>
+                                       FontSize="20" />
                             </Grid>
-                            <!--<StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer 
-                                    NumberOfTapsRequired="1"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:ItemDetailViewModel}}, Path=ItemTapped}"		
-                                    CommandParameter="{Binding .}">
-                                </TapGestureRecognizer>
-                            </StackLayout.GestureRecognizers>-->
-                        </StackLayout>
+                        </SwipeView>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
