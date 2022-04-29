@@ -18,19 +18,29 @@ namespace WeightLiftTracker.ViewModels
             set => LoadEverything(value);
         }
         public Exercise Exercise { get; set; }
-
+        public ObservableCollection<Set> LastWorkout { get; set; }
         public async void LoadEverything(string exerciseId)
         {
             Exercise = await App.Database.GetExerciseById(int.Parse(exerciseId));
             Title = Exercise.Name;
-            IsBusy = true;
+            SetLastWorkoutStats(int.Parse(exerciseId));
         }
         public void OnAppearing()
         {
         }
 
+        private async void SetLastWorkoutStats(int exerciseId)
+        {
+            var lastWorkoutSets = await App.Database.GetLastWorkoutStatsByExerciseId(exerciseId);
+            foreach (var set in lastWorkoutSets)
+            {
+                LastWorkout.Add(set);
+            }
+        }
+
         public ExerciseDetailViewModel()
         {
+            LastWorkout = new ObservableCollection<Set>();
         }
     }
 }

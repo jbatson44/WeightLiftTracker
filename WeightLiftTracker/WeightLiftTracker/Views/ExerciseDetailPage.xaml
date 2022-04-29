@@ -1,10 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models" x:DataType="viewmodels:ExerciseDetailViewModel"
-             x:Class="WeightLiftTracker.Views.ExerciseDetailPage"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models"
              Title="{Binding Title}"
-             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
-    <StackLayout>
-        
+             BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+             x:Class="WeightLiftTracker.Views.ExerciseDetailPage">
+    <StackLayout
+        x:DataType="viewmodels:ExerciseDetailViewModel" >
+        <CollectionView 
+            ItemsSource="{Binding LastWorkout}"
+            >
+            <CollectionView.Header>
+                <Label
+                    Text="Most Recent Workout:">
+                </Label>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout 
+                        Padding="10" 
+                        x:DataType="model:Set">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Entry
+                                Grid.Column="0" 
+                                Text="{Binding Weight, Mode=TwoWay}" 
+                                FontSize="Medium" 
+                                IsReadOnly="True"
+                                Keyboard="Numeric"/>
+                            <Entry 
+                                Grid.Column="1" 
+                                Text="{Binding Reps, Mode=TwoWay}" 
+                                FontSize="Medium" 
+                                IsReadOnly="True"
+                                Keyboard="Numeric"/>
+                        </Grid>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </StackLayout>
 </ContentPage>
