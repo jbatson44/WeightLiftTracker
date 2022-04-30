@@ -10,8 +10,15 @@ using Xamarin.Forms;
 namespace WeightLiftTracker.ViewModels
 {
     [QueryProperty(nameof(RoutineId), "routineId")]
+    [QueryProperty(nameof(WorkoutInProgress), "workoutInProgress")]
     public class AddExerciseViewModel : BaseViewModel
     {
+        private bool workoutInProgress;
+        public bool WorkoutInProgress
+        {
+            get => workoutInProgress;
+            set => SetProperty(ref workoutInProgress, value);
+        }
         private string name;
         public string Name
         {
@@ -87,6 +94,11 @@ namespace WeightLiftTracker.ViewModels
 
         private async void OnSave()
         {
+            if (WorkoutInProgress)
+            {
+                await Shell.Current.GoToAsync($"..?exerciseToAdd={SelectedExercise.Id}&routineId={Routine.Id}");
+                return;
+            }
             await App.Database.AddExerciseToRoutine(SelectedExercise.Id, Routine.Id);
 
             // This will pop the current page off the navigation stack

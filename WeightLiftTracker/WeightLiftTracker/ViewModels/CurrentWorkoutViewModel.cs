@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WeightLiftTracker.Models;
+using WeightLiftTracker.Views;
 using Xamarin.Forms;
 
 namespace WeightLiftTracker.ViewModels
 {
+    [QueryProperty(nameof(ExerciseToAdd), "exerciseToAdd")]
     [QueryProperty(nameof(RoutineId), "routineId")]
     public class CurrentWorkoutViewModel : BaseViewModel
     {
@@ -16,6 +18,11 @@ namespace WeightLiftTracker.ViewModels
         public TimeSpan? EndTime { get; set; }
         public ObservableCollection<WorkoutExercise> Exercises { get; set; }
         public ObservableCollection<WorkoutExercise> PreviousExercises { get; set; }
+        private string exerciseToAdd { get; set;}
+        public string ExerciseToAdd
+        {
+            set => AddNewExercise(value);
+        }
         public string RoutineId
         {
             set => LoadEverything(value);
@@ -24,6 +31,10 @@ namespace WeightLiftTracker.ViewModels
 
         public async void LoadEverything(string routineId)
         {
+            if (!string.IsNullOrEmpty(exerciseToAdd))
+            {
+                return;
+            }
             Routine = await App.Database.GetRoutineById(int.Parse(routineId));
             Title = Routine.Name;
             await ExecuteLoadItemsCommand();
@@ -47,7 +58,7 @@ namespace WeightLiftTracker.ViewModels
             DeleteSetCommand = new Command<WorkoutSet>(DeleteSet);
 
             AddSetCommand = new Command<WorkoutExercise>(AddSet);
-            AddExerciseCommand = new Command(OnAddItem);
+            AddExerciseCommand = new Command(OpenAddExercisePage);
             FinishWorkoutCommand = new Command(FinishWorkout);
         }
         public async Task ExecuteLoadItemsCommand()
@@ -64,13 +75,7 @@ namespace WeightLiftTracker.ViewModels
                     var exercises = await App.Database.GetExercisesByRoutine(Routine.Id);
                     foreach (var exercise in exercises)
                     {
-                        await GetPreviousWorkoutSetData(exercise);
-                        var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
-                        {
-                            new WorkoutSet(exercise.Name)
-                        });
-                        Exercises.Add(newEx);
-                        SetExercisePreviousSetData(newEx);
+                        AddExercise(exercise);
                     }
                 }
             }
@@ -170,9 +175,27 @@ namespace WeightLiftTracker.ViewModels
             PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, prevWorkoutSets));
         }
 
-        private async void OnAddItem(object obj)
+        private async void OpenAddExercisePage(object obj)
         {
-            //await Shell.Current.GoToAsync($"{nameof(AddExerciseToRoutine)}?routineId={Routine.Id}");
+            await Shell.Current.GoToAsync($"{nameof(AddExerciseToRoutine)}?routineId={Routine.Id}&workoutInProgress={true}");
+        }
+
+        private async void AddNewExercise(string exerciseId)
+        {
+            exerciseToAdd = exerciseId;
+            var exercise = await App.Database.GetExerciseById(int.Parse(exerciseId));
+            AddExercise(exercise);
+        }
+
+        private async void AddExercise(Exercise exercise)
+        { 
+            await GetPreviousWorkoutSetData(exercise);
+            var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
+                        {
+                            new WorkoutSet(exercise.Name)
+                        });
+            Exercises.Add(newEx);
+            SetExercisePreviousSetData(newEx);
         }
 
         public async void FinishWorkout()
