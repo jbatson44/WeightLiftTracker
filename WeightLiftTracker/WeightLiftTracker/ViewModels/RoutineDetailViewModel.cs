@@ -17,7 +17,7 @@ namespace WeightLiftTracker.ViewModels
         public Command LoadExercisesCommand { get; }
         public Command AddExerciseCommand { get; }
         public Command StartWorkoutCommand { get; }
-        public Command<Routine> ItemTapped { get; }
+        public Command<Exercise> ItemTapped { get; }
         public Command<Exercise> DeleteExerciseCommand { get; }
         public string RoutineId
         {
@@ -39,7 +39,7 @@ namespace WeightLiftTracker.ViewModels
             LoadExercisesCommand = new Command(async () => await ExecuteLoadItemsCommand());
             DeleteExerciseCommand = new Command<Exercise>(DeleteExercise);
 
-            //ItemTapped = new Command<Routine>(OnItemSelected);
+            ItemTapped = new Command<Exercise>(OnItemSelected);
 
             AddExerciseCommand = new Command(OnAddItem);
             StartWorkoutCommand = new Command(StartWorkout);
@@ -108,8 +108,7 @@ namespace WeightLiftTracker.ViewModels
             if (exercise == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={exercise.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ExerciseDetailPage)}?exerciseId={exercise.Id}");
         }
     }
 }
