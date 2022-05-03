@@ -74,7 +74,7 @@
                                    CommandParameter="{Binding .}" />
                                 </SwipeItems>
                             </SwipeView.RightItems>
-                            <Grid HeightRequest="60">
+                            <Grid HeightRequest="40">
                                 <Label 
                                     Text="{Binding ExerciseName}" 
                                     HorizontalTextAlignment="Center"

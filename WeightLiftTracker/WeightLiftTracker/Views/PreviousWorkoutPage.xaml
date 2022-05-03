@@ -59,9 +59,17 @@
                 <DataTemplate>
                     <StackLayout 
                         x:DataType="model:WorkoutExercise" 
-                        Padding="5, 5, 5, 5">
-                        <Grid
-                            BackgroundColor="Gray">
+                        Padding="5, 5, 5, 5"
+                        BackgroundColor="DarkSlateGray">
+                        <Grid HeightRequest="40">
+                            <Label 
+                                    Text="{Binding ExerciseName}" 
+                                    HorizontalTextAlignment="Center"
+                                    VerticalOptions="Center"
+                                    FontSize="20" 
+                                    Padding="0, 0, 0, 0"/>
+                        </Grid>
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -71,24 +79,14 @@
                                 <RowDefinition Height="20" />
                             </Grid.RowDefinitions>
                             <Label 
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Text="{Binding ExerciseName}" 
-                                HorizontalTextAlignment="Start"
-                                VerticalOptions="Center"
-                                FontSize="20" 
-                                Padding="20, 0, 0, 0"/>
-                            <Label 
                                 Grid.Row="1"
                                 Grid.Column="0"
-                                BackgroundColor="DarkSlateGray"
                                 HorizontalTextAlignment="Center"
                                 Text="Weight"
                                 FontSize="16" />
                             <Label 
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                BackgroundColor="DarkSlateGray"
                                 HorizontalTextAlignment="Center"
                                 Text="Reps"
                                 FontSize="16" />
@@ -105,7 +103,6 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
                             </Grid.ColumnDefinitions>
                             <Entry
                                 Grid.Column="0" 
