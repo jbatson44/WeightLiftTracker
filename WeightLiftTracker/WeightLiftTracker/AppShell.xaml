@@ -3,7 +3,7 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:WeightLiftTracker.Views"
        Title="WeightLiftTracker"
-       FlyoutBackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+       FlyoutBackgroundColor="{AppThemeBinding Light=White, Dark={StaticResource Primary}}"
        x:Class="WeightLiftTracker.AppShell">
 
     <!--
@@ -47,7 +47,7 @@
                             </VisualState>
                             <VisualState x:Name="Selected">
                                 <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="BackgroundColor" Value="#939699" />
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>

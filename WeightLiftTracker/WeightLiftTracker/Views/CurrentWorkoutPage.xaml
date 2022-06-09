@@ -16,7 +16,13 @@
             IsGrouped="true">
             <CollectionView.Header>
                 <StackLayout
-                    BackgroundColor="Gray">
+                    BackgroundColor="{StaticResource Primary}"
+                    >
+                    <BoxView
+                        HeightRequest="3"
+                        BackgroundColor="Black"
+                        HorizontalOptions="FillAndExpand">
+                    </BoxView>
                     <Label 
                         Text="{Binding Title}"
                         FontSize="26"
@@ -52,6 +58,11 @@
                             Grid.Row="1"
                             Time="{Binding EndTime}"></TimePicker>
                     </Grid>
+                    <BoxView
+                        HeightRequest="3"
+                        BackgroundColor="Black"
+                        HorizontalOptions="FillAndExpand">
+                    </BoxView>
                 </StackLayout>
             </CollectionView.Header>
             <CollectionView.EmptyView>
@@ -64,7 +75,7 @@
                     <StackLayout 
                         x:DataType="model:WorkoutExercise" 
                         Padding="5, 5, 5, 5"
-                            BackgroundColor="DarkSlateGray">
+                            BackgroundColor="{StaticResource Primary}">
                         <SwipeView >
                             <SwipeView.RightItems>
                                 <SwipeItems>

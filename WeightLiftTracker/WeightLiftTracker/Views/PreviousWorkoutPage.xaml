@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-             x:Class="WeightLiftTracker.Views.PreviousWorkoutPage">
+             x:Class="WeightLiftTracker.Views.PreviousWorkoutPage"
+             Title="{Binding Title}">
     <StackLayout 
         x:DataType="viewmodels:PreviousWorkoutViewModel" >
         <CollectionView 
@@ -10,9 +11,14 @@
             IsGrouped="true">
             <CollectionView.Header>
                 <StackLayout
-                    BackgroundColor="Gray">
+                    BackgroundColor="{StaticResource Primary}">
+                    <BoxView
+                        HeightRequest="3"
+                        BackgroundColor="Black"
+                        HorizontalOptions="FillAndExpand">
+                    </BoxView>
                     <Label 
-                        Text="{Binding Title}"
+                        Text="{Binding Workout.RoutineName}"
                         FontSize="26"
                         HorizontalTextAlignment="Center">
                     </Label>
@@ -48,6 +54,11 @@
                             IsEnabled="false"
                             Time="{Binding EndTime}"></TimePicker>
                     </Grid>
+                    <BoxView
+                        HeightRequest="3"
+                        BackgroundColor="Black"
+                        HorizontalOptions="FillAndExpand">
+                    </BoxView>
                 </StackLayout>
             </CollectionView.Header>
             <CollectionView.EmptyView>
@@ -60,7 +71,7 @@
                     <StackLayout 
                         x:DataType="model:WorkoutExercise" 
                         Padding="5, 5, 5, 5"
-                        BackgroundColor="DarkSlateGray">
+                        BackgroundColor="{StaticResource Primary}">
                         <Grid HeightRequest="40">
                             <Label 
                                     Text="{Binding ExerciseName}" 

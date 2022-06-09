@@ -27,7 +27,7 @@ namespace WeightLiftTracker.ViewModels
             StartTime = Workout.StartTime.TimeOfDay;
             EndTime = Workout.EndTime.TimeOfDay;
             Date = Workout.StartTime.Date;
-            Title = Date.ToString("MM/dd/yyyy") + " - " + Workout.RoutineName;
+            Title = Date.ToString("MM/dd/yyyy");
             await ExecuteLoadItemsCommand();
         }
 
