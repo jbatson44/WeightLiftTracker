@@ -50,6 +50,7 @@
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
                             <Label Text="{Binding Name}" 
+                                  Padding="30,0,0,0"
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="20"
