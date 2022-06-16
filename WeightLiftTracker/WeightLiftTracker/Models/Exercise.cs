@@ -1,6 +1,4 @@
 ﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
-using System.Collections.Generic;
 
 namespace WeightLiftTracker.Models
 {
@@ -8,9 +6,8 @@ namespace WeightLiftTracker.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        //[ManyToMany(typeof(Routine))]
-        //public List<Routine> Routines { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
+        public int Type { get; set; } 
     }
 }

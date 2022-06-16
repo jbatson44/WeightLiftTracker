@@ -14,12 +14,14 @@ namespace WeightLiftTracker.ViewModels
         private string name;
         private List<ExerciseCategory> _exerciseCategories;
         private ExerciseCategory _selectedCategory;
+        private List<ExerciseTypeEnum> _exerciseTypes;
+        private ExerciseTypeEnum _selectedType;
         public string Name
         {
             get => name;
             set => SetProperty(ref name, value);
         }
-        public List<ExerciseCategory> ExerciseCategories 
+        public List<ExerciseCategory> ExerciseCategories
         {
             get => _exerciseCategories;
             set => SetProperty(ref _exerciseCategories, value);
@@ -28,6 +30,16 @@ namespace WeightLiftTracker.ViewModels
         {
             get => _selectedCategory;
             set => SetProperty(ref _selectedCategory, value);
+        }
+        public List<ExerciseTypeEnum> ExerciseTypes
+        {
+            get => _exerciseTypes;
+            set => SetProperty(ref _exerciseTypes, value);
+        }
+        public ExerciseTypeEnum SelectedType
+        {
+            get => _selectedType;
+            set => SetProperty(ref _selectedType, value);
         }
         public NewExerciseViewModel()
         {
@@ -56,6 +68,15 @@ namespace WeightLiftTracker.ViewModels
             {
                 Name = "Shoulders"
             });
+            ExerciseCategories.Add(new ExerciseCategory
+            {
+                Name = "Cardio"
+            });
+            ExerciseTypes = new List<ExerciseTypeEnum>
+            {
+                ExerciseTypeEnum.Weights,
+                ExerciseTypeEnum.Cardio
+            };
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
             PropertyChanged +=
@@ -83,7 +104,8 @@ namespace WeightLiftTracker.ViewModels
             {
                 Id = 1,
                 Name = name,
-                Category = SelectedCategory.Name
+                Category = SelectedCategory.Name,
+                Type = (int)SelectedType
             };
 
             await App.Database.SaveExerciseAsync(exercise);

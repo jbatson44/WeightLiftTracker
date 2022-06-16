@@ -55,15 +55,16 @@ namespace WeightLiftTracker.ViewModels
                         var workoutSets = new ObservableCollection<WorkoutSet>();
                         foreach (var set in ex)
                         {
-                            workoutSets.Add(new WorkoutSet(set.ExerciseName)
+                            workoutSets.Add(new WorkoutSet(set.ExerciseName, set.ExerciseType)
                             {
                                 Id = set.Id,
                                 ExerciseName = set.ExerciseName,
+                                ExerciseType = set.ExerciseType,
                                 Reps = set.Reps,
                                 Weight = set.Weight
                             });
                         }
-                        Exercises.Add(new WorkoutExercise(ex.Key,ex.FirstOrDefault().ExerciseName, workoutSets));
+                        Exercises.Add(new WorkoutExercise(ex.Key,ex.FirstOrDefault().ExerciseName, ex.FirstOrDefault().ExerciseType, workoutSets));
                     }
                 }
             }

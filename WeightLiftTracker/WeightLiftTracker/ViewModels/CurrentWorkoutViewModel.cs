@@ -129,7 +129,7 @@ namespace WeightLiftTracker.ViewModels
             try
             {
                 var ex = Exercises.FirstOrDefault(x => x.ExerciseId == exercise.ExerciseId);
-                var newSet = new WorkoutSet(exercise.ExerciseName)
+                var newSet = new WorkoutSet(exercise.ExerciseName, exercise.ExerciseType)
                 {
                     Id = ex.Count
                 };
@@ -153,8 +153,13 @@ namespace WeightLiftTracker.ViewModels
             for (var i = 0; i < exercise.Count; i++)
             {
                 var prevExSet = previousExerciseData.ElementAtOrDefault(i);
+                exercise[i].ExerciseType = prevExSet != null ? prevExSet.ExerciseType : exercise.ExerciseType;
                 exercise[i].PrevReps = prevExSet != null ? prevExSet.PrevReps : 0;
                 exercise[i].PrevWeight = prevExSet != null ? prevExSet.PrevWeight : 0;
+                exercise[i].PrevDistance = prevExSet?.PrevDistance;
+                exercise[i].PrevMinutes = prevExSet?.PrevMinutes;
+                exercise[i].PrevSeconds = prevExSet?.PrevSeconds;
+                exercise[i].PrevNotes = prevExSet?.PrevNotes;
             }
         }
 
@@ -164,15 +169,19 @@ namespace WeightLiftTracker.ViewModels
             var prevWorkoutSets = new ObservableCollection<WorkoutSet>();
             foreach (var set in sets)
             {
-                prevWorkoutSets.Add(new WorkoutSet(set.ExerciseName)
+                prevWorkoutSets.Add(new WorkoutSet(set.ExerciseName, set.ExerciseType)
                 {
                     Id = set.Id,
                     ExerciseName = set.ExerciseName,
                     PrevReps = set.Reps,
-                    PrevWeight = set.Weight
+                    PrevWeight = set.Weight,
+                    PrevDistance = set?.Distance,
+                    PrevMinutes = set?.Minutes,
+                    PrevSeconds = set?.Seconds,
+                    PrevNotes = set?.Notes
                 });
             }
-            PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, prevWorkoutSets));
+            PreviousExercises.Add(new WorkoutExercise(exercise.Id, exercise.Name, exercise.Type, prevWorkoutSets));
         }
 
         private async void OpenAddExercisePage(object obj)
@@ -190,9 +199,9 @@ namespace WeightLiftTracker.ViewModels
         private async void AddExercise(Exercise exercise)
         { 
             await GetPreviousWorkoutSetData(exercise);
-            var newEx = new WorkoutExercise(exercise.Id, exercise.Name, new ObservableCollection<WorkoutSet>
+            var newEx = new WorkoutExercise(exercise.Id, exercise.Name, exercise.Type, new ObservableCollection<WorkoutSet>
                         {
-                            new WorkoutSet(exercise.Name)
+                            new WorkoutSet(exercise.Name, exercise.Type)
                         });
             Exercises.Add(newEx);
             SetExercisePreviousSetData(newEx);
@@ -219,7 +228,9 @@ namespace WeightLiftTracker.ViewModels
                 {
                     for (int i = 0; i < ex.Count; i++)
                     {
-                        if (ex[i].Reps > 0)
+                        if ((ex[i].ExerciseType == (int)ExerciseTypeEnum.Weights && ex[i].Reps > 0) || 
+                            (ex[i].ExerciseType == (int)ExerciseTypeEnum.Cardio && 
+                            (ex[i].Distance > 0 || ex[i].Minutes > 0 || ex[i].Seconds > 0)))
                         {
                             Set set = new Set
                             {
@@ -228,7 +239,12 @@ namespace WeightLiftTracker.ViewModels
                                 ExerciseName = ex.ExerciseName,
                                 Reps = ex[i].Reps ?? 0,
                                 Weight = ex[i].Weight ?? 0,
-                                WorkoutId = workout.Id
+                                WorkoutId = workout.Id,
+                                ExerciseType = ex.ExerciseType,
+                                Distance = ex[i].Distance,
+                                Minutes = ex[i].Minutes,
+                                Seconds = ex[i].Seconds,
+                                Notes = ex[i].Notes,
                             };
                             rows = await App.Database.SaveSetAsync(set);
                         }
