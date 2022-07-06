@@ -61,7 +61,11 @@ namespace WeightLiftTracker.ViewModels
                                 ExerciseName = set.ExerciseName,
                                 ExerciseType = set.ExerciseType,
                                 Reps = set.Reps,
-                                Weight = set.Weight
+                                Weight = set.Weight,
+                                Notes = set.Notes,
+                                Distance = set.Distance,
+                                Minutes = set.Minutes,
+                                Seconds = set.Seconds
                             });
                         }
                         Exercises.Add(new WorkoutExercise(ex.Key,ex.FirstOrDefault().ExerciseName, ex.FirstOrDefault().ExerciseType, workoutSets));

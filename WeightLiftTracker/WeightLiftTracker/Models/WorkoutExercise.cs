@@ -35,7 +35,7 @@ namespace WeightLiftTracker.Models
         public int? Weight { get; set; }
         public int? Minutes { get; set; }
         public int? Seconds { get; set; }
-        public int? Distance { get; set; }
+        public float? Distance { get; set; }
         public string Notes { get; set; }
 
 

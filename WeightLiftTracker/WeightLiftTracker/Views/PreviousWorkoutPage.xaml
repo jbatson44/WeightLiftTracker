@@ -1,13 +1,154 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:viewmodels="clr-namespace:WeightLiftTracker.ViewModels" xmlns:model="clr-namespace:WeightLiftTracker.Models" xmlns:controls="clr-namespace:WeightLiftTracker.Controls"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
              x:Class="WeightLiftTracker.Views.PreviousWorkoutPage"
              Title="{Binding Title}">
+
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="WeightSetTemplate">
+            <SwipeView Padding="10" 
+                       x:DataType="model:WorkoutSet">
+                <SwipeView.RightItems>
+                    <SwipeItems>
+                        <SwipeItem Text="Delete" 
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteSetCommand}"
+                                   CommandParameter="{Binding .}" />
+                    </SwipeItems>
+                </SwipeView.RightItems>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           HorizontalTextAlignment="Center"
+                           Text="Weight"
+                           FontSize="16" />
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           HorizontalTextAlignment="Center"
+                           Text="Reps"
+                           FontSize="16" />
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Row="0"
+                           Grid.Column="2"
+                           HorizontalTextAlignment="Center"
+                           Text="Notes"
+                           FontSize="16" />
+                    <Entry Grid.Row="1"
+                           Grid.Column="0" 
+                           Text="{Binding Weight, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           Keyboard="Numeric"
+                           IsReadOnly="True"/>
+                    <Entry Grid.Row="1"
+                           Grid.Column="1" 
+                           Text="{Binding Reps, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           Keyboard="Numeric"
+                           IsReadOnly="True"/>
+                    <Entry Grid.Row="1"
+                           Grid.Column="2" 
+                           Text="{Binding Notes, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           IsReadOnly="True"/>
+                </Grid>
+            </SwipeView>
+        </DataTemplate>
+        <DataTemplate x:Key="CardioSetTemplate">
+            <SwipeView Padding="10" 
+                       x:DataType="model:WorkoutSet">
+                <SwipeView.RightItems>
+                    <SwipeItems>
+                        <SwipeItem Text="Delete"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteSetCommand}"
+                                   CommandParameter="{Binding .}" />
+                    </SwipeItems>
+                </SwipeView.RightItems>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Column="0"
+                           Grid.Row="0"
+                           HorizontalTextAlignment="Center"
+                           Text="Minutes"
+                           FontSize="16" />
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Column="1"
+                           Grid.Row="0"
+                           HorizontalTextAlignment="Center"
+                           Text="Seconds"
+                           FontSize="16" />
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Column="2"
+                           Grid.Row="0"
+                           HorizontalTextAlignment="Center"
+                           Text="Distance"
+                           FontSize="16" />
+                    <Entry Grid.Column="0" 
+                           Grid.Row="1" 
+                           Text="{Binding Minutes, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           Keyboard="Numeric"
+                           IsReadOnly="True"/>
+                    <Entry Grid.Column="1" 
+                           Grid.Row="1" 
+                           Text="{Binding Seconds, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           Keyboard="Numeric"
+                           IsReadOnly="True"/>
+                    <Entry Grid.Column="2" 
+                           Grid.Row="1" 
+                           Text="{Binding Distance, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           Keyboard="Numeric"
+                           IsReadOnly="True"/>
+                    <Label BackgroundColor="{StaticResource Primary}"
+                           Grid.Column="0"
+                           Grid.Row="2"
+                           HorizontalTextAlignment="Center"
+                           Text="Notes"
+                           FontSize="16" />
+                    <Entry Grid.Column="0"
+                           Grid.Row="3" 
+                           Text="{Binding Notes, Mode=TwoWay}" 
+                           FontSize="Medium" 
+                           IsReadOnly="True"/>
+                </Grid>
+            </SwipeView>
+        </DataTemplate>
+        <controls:WorkoutSetTemplateSelector x:Key="WorkoutSetTemplateSelector"
+                                             WeightSetTemplate="{StaticResource WeightSetTemplate}"
+                                             CardioSetTemplate="{StaticResource CardioSetTemplate}" />
+    </ContentPage.Resources>
+
     <StackLayout 
         x:DataType="viewmodels:PreviousWorkoutViewModel" >
         <CollectionView 
             ItemsSource="{Binding Exercises}"
+            ItemTemplate="{StaticResource WorkoutSetTemplateSelector}"
             IsGrouped="true">
             <CollectionView.Header>
                 <StackLayout
@@ -71,66 +212,28 @@
                     <StackLayout 
                         x:DataType="model:WorkoutExercise" 
                         Padding="5, 5, 5, 5"
-                        BackgroundColor="{StaticResource Primary}">
-                        <Grid HeightRequest="40">
-                            <Label 
+                            BackgroundColor="{StaticResource Primary}">
+                        <SwipeView >
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem Text="Delete"
+                                   BackgroundColor="Red"
+                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CurrentWorkoutViewModel}}, Path=DeleteExerciseCommand}"
+                                   CommandParameter="{Binding .}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Grid HeightRequest="40">
+                                <Label 
                                     Text="{Binding ExerciseName}" 
                                     HorizontalTextAlignment="Center"
                                     VerticalOptions="Center"
                                     FontSize="20" 
                                     Padding="0, 0, 0, 0"/>
-                        </Grid>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="20" />
-                            </Grid.RowDefinitions>
-                            <Label 
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                HorizontalTextAlignment="Center"
-                                Text="Weight"
-                                FontSize="16" />
-                            <Label 
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                HorizontalTextAlignment="Center"
-                                Text="Reps"
-                                FontSize="16" />
-                        </Grid>
+                            </Grid>
+                        </SwipeView>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.GroupHeaderTemplate>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout 
-                        Padding="10" 
-                        x:DataType="model:WorkoutSet">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Entry
-                                Grid.Column="0" 
-                                Text="{Binding Weight, Mode=TwoWay}" 
-                                FontSize="Medium" 
-                                IsReadOnly="True"
-                                Keyboard="Numeric"/>
-                            <Entry 
-                                Grid.Column="1" 
-                                Text="{Binding Reps, Mode=TwoWay}" 
-                                FontSize="Medium" 
-                                IsReadOnly="True"
-                                Keyboard="Numeric"/>
-                        </Grid>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
             <CollectionView.GroupFooterTemplate>
                 <DataTemplate>
                     <StackLayout 
