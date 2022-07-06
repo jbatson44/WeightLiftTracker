@@ -171,8 +171,8 @@
                     </Label>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -183,21 +183,23 @@
                             Grid.Row="0"
                             Text="Start:" 
                             HorizontalTextAlignment="Center"
-                            FontSize="22" />
-                        <TimePicker 
+                            FontSize="18" />
+                        <Label 
                             Grid.Column="1"
                             Grid.Row="0"
-                            Time="{Binding StartTime}"></TimePicker>
-                        <Label 
-                            Grid.Column="0"
-                            Grid.Row="1"
                             Text="End:" 
                             HorizontalTextAlignment="Center"
-                            FontSize="22" />
+                            FontSize="18" />
+                        <TimePicker 
+                            Grid.Column="0"
+                            Grid.Row="1"
+                            Time="{Binding StartTime}"
+                            HorizontalOptions="CenterAndExpand"></TimePicker>
                         <TimePicker 
                             Grid.Column="1"
                             Grid.Row="1"
-                            Time="{Binding EndTime}"></TimePicker>
+                            Time="{Binding EndTime}"
+                            HorizontalOptions="CenterAndExpand"></TimePicker>
                     </Grid>
                     <BoxView
                         HeightRequest="3"
